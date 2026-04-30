@@ -67,32 +67,6 @@
         line-height: 1;
       }
 
-      .lead {
-        margin-top: 18px;
-        max-width: 760px;
-        color: var(--muted);
-        font-size: clamp(1.05rem, 2vw, 1.35rem);
-      }
-
-      .chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 28px;
-      }
-
-      .chip {
-        min-height: 42px;
-        display: inline-flex;
-        align-items: center;
-        padding: 0 18px;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        background: #fafaf8;
-        color: #3f3d3a;
-        font-weight: 750;
-      }
-
       .panel {
         margin-top: 24px;
         padding: clamp(22px, 3vw, 34px);
@@ -173,12 +147,6 @@
         .panel {
           padding: 22px;
         }
-
-        .chip {
-          min-height: 36px;
-          padding: 0 13px;
-          font-size: 0.92rem;
-        }
       }
     </style>
   </head>
@@ -186,17 +154,6 @@
     <main class="app">
       <section class="hero">
         <h1>Ranking Padel ELO</h1>
-        <p class="lead">
-          Ranking historico del grupo de padel de los jueves, ordenado por ELO
-          individual.
-        </p>
-        <div class="chips" aria-label="Reglas del ranking">
-          <span class="chip">2 vs 2</span>
-          <span class="chip">1 set</span>
-          <span class="chip">4 parejas</span>
-          <span class="chip">6 partidos</span>
-          <span class="chip">ELO individual</span>
-        </div>
       </section>
 
       <section class="panel">
