@@ -248,6 +248,32 @@
         font-size: 0.92rem;
       }
 
+      .explain-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .explain-item {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 16px;
+        background: #fafaf8;
+      }
+
+      .explain-item strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 1.02rem;
+      }
+
+      .explain-item p {
+        color: var(--muted);
+        font-weight: 650;
+        line-height: 1.35;
+      }
+
       @media (max-width: 640px) {
         .app {
           width: min(100% - 20px, 1180px);
@@ -261,6 +287,10 @@
 
         .hero::after {
           display: none;
+        }
+
+        .explain-grid {
+          grid-template-columns: 1fr;
         }
 
       }
@@ -307,7 +337,7 @@
 
       <section class="panel">
         <h2>Historial</h2>
-        <p class="subtle">Resultados cargados por fecha.</p>
+        <p class="subtle">Resultados cargados por fecha y puntos ELO en juego.</p>
         <div class="table-wrap">
           <table>
             <thead>
@@ -316,10 +346,34 @@
                 <th>Pareja A</th>
                 <th>Resultado</th>
                 <th>Pareja B</th>
+                <th>Puntos</th>
               </tr>
             </thead>
             <tbody id="historyBody"></tbody>
           </table>
+        </div>
+        <div class="explain-grid">
+          <div class="explain-item">
+            <strong>Que significa puntos</strong>
+            <p>
+              Es lo que gana cada jugador de la pareja vencedora y pierde cada
+              jugador de la pareja derrotada.
+            </p>
+          </div>
+          <div class="explain-item">
+            <strong>Como se calcula</strong>
+            <p>
+              Parte en 28 puntos. Si ganas por mas games sube un poco. Si le
+              ganas a una pareja con mejor ELO, tambien vale mas.
+            </p>
+          </div>
+          <div class="explain-item">
+            <strong>Como mejorar</strong>
+            <p>
+              Ganar partidos suma ELO. Ganarle a parejas fuertes y cerrar sets
+              con buena diferencia acelera la subida.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -441,10 +495,8 @@ Podriamos mostrar mejor pareja de la fecha"
       function applyMatch(stats, match) {
         const eloA = average(match.a.map((name) => stats.get(name).elo));
         const eloB = average(match.b.map((name) => stats.get(name).elo));
-        const expectedA = 1 / (1 + Math.pow(10, (eloB - eloA) / 400));
+        const delta = getMatchDelta(match, eloA, eloB);
         const actualA = match.scoreA > match.scoreB ? 1 : 0;
-        const margin = Math.min(1.35, 1 + Math.abs(match.scoreA - match.scoreB) * 0.035);
-        const delta = Math.round(28 * margin * (actualA - expectedA));
         const winner = actualA === 1 ? match.a : match.b;
         const loser = actualA === 1 ? match.b : match.a;
 
@@ -470,6 +522,42 @@ Podriamos mostrar mejor pareja de la fecha"
 
         match.b.forEach((name) => {
           stats.get(name).diff += match.scoreB - match.scoreA;
+        });
+      }
+
+      function getMatchDelta(match, eloA, eloB) {
+        const expectedA = 1 / (1 + Math.pow(10, (eloB - eloA) / 400));
+        const actualA = match.scoreA > match.scoreB ? 1 : 0;
+        const margin = Math.min(1.35, 1 + Math.abs(match.scoreA - match.scoreB) * 0.035);
+        return Math.round(28 * margin * Math.abs(actualA - expectedA));
+      }
+
+      function getHistoryMatches() {
+        const stats = new Map();
+        playerNames.forEach((name) => {
+          stats.set(name, {
+            elo: 1000,
+          });
+        });
+
+        return matches.map((match) => {
+          const eloA = average(match.a.map((name) => stats.get(name).elo));
+          const eloB = average(match.b.map((name) => stats.get(name).elo));
+          const points = getMatchDelta(match, eloA, eloB);
+          const winner = match.scoreA > match.scoreB ? match.a : match.b;
+          const loser = match.scoreA > match.scoreB ? match.b : match.a;
+
+          winner.forEach((name) => {
+            stats.get(name).elo += points;
+          });
+          loser.forEach((name) => {
+            stats.get(name).elo -= points;
+          });
+
+          return {
+            ...match,
+            points,
+          };
         });
       }
 
@@ -499,7 +587,7 @@ Podriamos mostrar mejor pareja de la fecha"
         })
         .join("");
 
-      const historyRows = matches
+      const historyRows = getHistoryMatches()
         .map((match) => {
           return `
             <tr>
@@ -507,6 +595,7 @@ Podriamos mostrar mejor pareja de la fecha"
               <td>${match.a.join(" / ")}</td>
               <td class="elo">${match.scoreA} - ${match.scoreB}</td>
               <td>${match.b.join(" / ")}</td>
+              <td class="elo">+${match.points} / -${match.points}</td>
             </tr>
           `;
         })
