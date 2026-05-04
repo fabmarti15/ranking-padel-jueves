@@ -144,13 +144,11 @@
       }
 
       textarea,
-      select,
       button {
         font: inherit;
       }
 
-      textarea,
-      select {
+      textarea {
         width: 100%;
         border: 1px solid var(--line);
         border-radius: 8px;
@@ -165,13 +163,7 @@
         resize: vertical;
       }
 
-      select {
-        min-height: 44px;
-        padding: 0 12px;
-      }
-
-      textarea:focus,
-      select:focus {
+      textarea:focus {
         border-color: var(--accent);
         box-shadow: 0 0 0 3px rgba(22, 122, 69, 0.12);
       }
@@ -259,19 +251,27 @@
           mejorar el ranking.
         </p>
         <div class="suggestion-form">
-          <select id="suggestionType" aria-label="Tipo de sugerencia">
-            <option value="Resultados">Subir resultados</option>
-            <option value="Agregar jugadores">Agregar jugadores</option>
-            <option value="Cambiar nombres">Cambiar nombre de jugadores</option>
-            <option value="Sugerencia">Sugerir cosas</option>
-          </select>
           <textarea
             id="suggestionText"
-            placeholder="Ej: Crist P. / Joaquin Villanueva vs Felipe Skewes / Fabian Martinez: 6-4"
+            placeholder="Ejemplos:
+
+Subir resultados:
+Cristian Perez / Joaquin Villanueva vs Felipe Skewes / Fabian Martinez: 6-4
+Tomas San Juan / Diego Martinez vs Daniel La Roche / Felipe Bindis: 6-3
+
+Agregar jugadores:
+Agregar a Juan Perez
+
+Cambiar nombres:
+Cambiar Crist P. por Cristian Perez
+
+Sugerencia:
+Podriamos mostrar mejor pareja de la fecha"
           ></textarea>
           <button id="sendSuggestion" type="button">Enviar</button>
           <p class="helper">
-            Se guardara como una entrada en GitHub para revisarla despues.
+            Para guardar sugerencias sin abrir otra pagina falta conectar un
+            servicio de guardado.
           </p>
         </div>
       </section>
@@ -437,22 +437,15 @@
       document.querySelector("#historyBody").innerHTML = historyRows;
 
       document.querySelector("#sendSuggestion").addEventListener("click", () => {
-        const type = document.querySelector("#suggestionType").value;
         const text = document.querySelector("#suggestionText").value.trim();
         if (!text) {
           alert("Escribe algo antes de enviar.");
           return;
         }
 
-        const title = `[${type}] ${new Date().toLocaleDateString("es-CL")}`;
-        const body = `Tipo: ${type}\n\n${text}`;
-        const url =
-          "https://github.com/fabmarti15/ranking-padel-jueves/issues/new?title=" +
-          encodeURIComponent(title) +
-          "&body=" +
-          encodeURIComponent(body);
-
-        window.open(url, "_blank", "noopener,noreferrer");
+        alert(
+          "Todavia falta conectar un servicio de guardado para que esto llegue al administrador."
+        );
       });
     </script>
   </body>
