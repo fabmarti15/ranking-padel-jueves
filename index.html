@@ -137,6 +137,62 @@
         font-weight: 900;
       }
 
+      .suggestion-form {
+        display: grid;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      textarea,
+      select,
+      button {
+        font: inherit;
+      }
+
+      textarea,
+      select {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: white;
+        color: var(--ink);
+        outline: none;
+      }
+
+      textarea {
+        min-height: 150px;
+        padding: 14px;
+        resize: vertical;
+      }
+
+      select {
+        min-height: 44px;
+        padding: 0 12px;
+      }
+
+      textarea:focus,
+      select:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(22, 122, 69, 0.12);
+      }
+
+      button {
+        min-height: 44px;
+        width: fit-content;
+        border: 0;
+        border-radius: 8px;
+        padding: 0 18px;
+        background: #171717;
+        color: white;
+        font-weight: 850;
+        cursor: pointer;
+      }
+
+      .helper {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
       @media (max-width: 640px) {
         .app {
           width: min(100% - 20px, 1180px);
@@ -193,6 +249,30 @@
             </thead>
             <tbody id="historyBody"></tbody>
           </table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Sugerencias del publico</h2>
+        <p class="subtle">
+          Escribe resultados, jugadores nuevos, cambios de nombre o ideas para
+          mejorar el ranking.
+        </p>
+        <div class="suggestion-form">
+          <select id="suggestionType" aria-label="Tipo de sugerencia">
+            <option value="Resultados">Subir resultados</option>
+            <option value="Agregar jugadores">Agregar jugadores</option>
+            <option value="Cambiar nombres">Cambiar nombre de jugadores</option>
+            <option value="Sugerencia">Sugerir cosas</option>
+          </select>
+          <textarea
+            id="suggestionText"
+            placeholder="Ej: Cris P. / Joaco vs Terre / Fa: 6-4"
+          ></textarea>
+          <button id="sendSuggestion" type="button">Enviar</button>
+          <p class="helper">
+            Se guardara como una entrada en GitHub para revisarla despues.
+          </p>
         </div>
       </section>
     </main>
@@ -355,6 +435,25 @@
 
       document.querySelector("#rankingBody").innerHTML = rankingRows;
       document.querySelector("#historyBody").innerHTML = historyRows;
+
+      document.querySelector("#sendSuggestion").addEventListener("click", () => {
+        const type = document.querySelector("#suggestionType").value;
+        const text = document.querySelector("#suggestionText").value.trim();
+        if (!text) {
+          alert("Escribe algo antes de enviar.");
+          return;
+        }
+
+        const title = `[${type}] ${new Date().toLocaleDateString("es-CL")}`;
+        const body = `Tipo: ${type}\n\n${text}`;
+        const url =
+          "https://github.com/fabmarti15/ranking-padel-jueves/issues/new?title=" +
+          encodeURIComponent(title) +
+          "&body=" +
+          encodeURIComponent(body);
+
+        window.open(url, "_blank", "noopener,noreferrer");
+      });
     </script>
   </body>
 </html>
