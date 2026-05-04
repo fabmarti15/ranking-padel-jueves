@@ -147,6 +147,7 @@
         .panel {
           padding: 22px;
         }
+
       }
     </style>
   </head>
@@ -176,38 +177,184 @@
           </table>
         </div>
       </section>
+
+      <section class="panel">
+        <h2>Historial</h2>
+        <p class="subtle">Resultados cargados por fecha.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Pareja A</th>
+                <th>Resultado</th>
+                <th>Pareja B</th>
+              </tr>
+            </thead>
+            <tbody id="historyBody"></tbody>
+          </table>
+        </div>
+      </section>
     </main>
 
     <script>
-      const players = [
-        { name: "Falipe S", elo: 1000, played: 3, wins: 2, losses: 1, diff: 0 },
-        { name: "Tom SJ", elo: 1000, played: 3, wins: 2, losses: 1, diff: 0 },
-        { name: "Dani", elo: 1000, played: 3, wins: 2, losses: 1, diff: 0 },
-        { name: "Angello", elo: 1000, played: 3, wins: 2, losses: 1, diff: 0 },
-        { name: "Joaco", elo: 1000, played: 3, wins: 2, losses: 1, diff: 0 },
-        { name: "Fabri", elo: 1000, played: 3, wins: 2, losses: 1, diff: 0 },
-        { name: "Fa", elo: 1000, played: 3, wins: 2, losses: 1, diff: 0 },
-        { name: "Nebe", elo: 1000, played: 3, wins: 2, losses: 1, diff: 0 },
+      const playerNames = [
+        "Cris P.",
+        "Joaco",
+        "Terre",
+        "Fa",
+        "Dani",
+        "Bindis",
+        "Tom SJ",
+        "Dieg",
       ];
 
-      const rows = players
+      const matches = [
+        {
+          date: "2026-04-30",
+          a: ["Cris P.", "Joaco"],
+          b: ["Terre", "Fa"],
+          scoreA: 6,
+          scoreB: 4,
+        },
+        {
+          date: "2026-04-30",
+          a: ["Terre", "Fa"],
+          b: ["Dani", "Bindis"],
+          scoreA: 6,
+          scoreB: 3,
+        },
+        {
+          date: "2026-04-30",
+          a: ["Terre", "Fa"],
+          b: ["Tom SJ", "Dieg"],
+          scoreA: 6,
+          scoreB: 3,
+        },
+        {
+          date: "2026-04-30",
+          a: ["Cris P.", "Joaco"],
+          b: ["Dani", "Bindis"],
+          scoreA: 6,
+          scoreB: 3,
+        },
+        {
+          date: "2026-04-30",
+          a: ["Cris P.", "Joaco"],
+          b: ["Tom SJ", "Dieg"],
+          scoreA: 6,
+          scoreB: 4,
+        },
+        {
+          date: "2026-04-30",
+          a: ["Dani", "Bindis"],
+          b: ["Tom SJ", "Dieg"],
+          scoreA: 3,
+          scoreB: 6,
+        },
+      ];
+
+      function calculateRanking() {
+        const stats = new Map();
+        playerNames.forEach((name) => {
+          stats.set(name, {
+            name,
+            elo: 1000,
+            played: 0,
+            wins: 0,
+            losses: 0,
+            diff: 0,
+          });
+        });
+
+        matches.forEach((match) => {
+          applyMatch(stats, match);
+        });
+
+        return [...stats.values()].sort((a, b) => {
+          if (b.elo !== a.elo) return b.elo - a.elo;
+          if (b.wins !== a.wins) return b.wins - a.wins;
+          if (b.diff !== a.diff) return b.diff - a.diff;
+          return playerNames.indexOf(a.name) - playerNames.indexOf(b.name);
+        });
+      }
+
+      function applyMatch(stats, match) {
+        const eloA = average(match.a.map((name) => stats.get(name).elo));
+        const eloB = average(match.b.map((name) => stats.get(name).elo));
+        const expectedA = 1 / (1 + Math.pow(10, (eloB - eloA) / 400));
+        const actualA = match.scoreA > match.scoreB ? 1 : 0;
+        const margin = Math.min(1.35, 1 + Math.abs(match.scoreA - match.scoreB) * 0.035);
+        const delta = Math.round(28 * margin * (actualA - expectedA));
+        const winner = actualA === 1 ? match.a : match.b;
+        const loser = actualA === 1 ? match.b : match.a;
+
+        [...match.a, ...match.b].forEach((name) => {
+          stats.get(name).played += 1;
+        });
+
+        winner.forEach((name) => {
+          const player = stats.get(name);
+          player.wins += 1;
+          player.elo += Math.abs(delta);
+        });
+
+        loser.forEach((name) => {
+          const player = stats.get(name);
+          player.losses += 1;
+          player.elo -= Math.abs(delta);
+        });
+
+        match.a.forEach((name) => {
+          stats.get(name).diff += match.scoreA - match.scoreB;
+        });
+
+        match.b.forEach((name) => {
+          stats.get(name).diff += match.scoreB - match.scoreA;
+        });
+      }
+
+      function average(values) {
+        return values.reduce((sum, value) => sum + value, 0) / values.length;
+      }
+
+      function formatDate(value) {
+        const [year, month, day] = value.split("-");
+        return `${day}-${month}-${year}`;
+      }
+
+      const rankingRows = calculateRanking()
         .map((player, index) => {
           const rankClass = index === 0 ? "rank-1" : index === 2 ? "rank-3" : "";
           return `
             <tr>
               <td><span class="rank-badge ${rankClass}">${index + 1}</span></td>
               <td>${player.name}</td>
-              <td class="elo">${player.elo}</td>
+              <td class="elo">${Math.round(player.elo)}</td>
               <td>${player.played}</td>
               <td>${player.wins}</td>
               <td>${player.losses}</td>
-              <td>${player.diff}</td>
+              <td>${player.diff > 0 ? "+" : ""}${player.diff}</td>
             </tr>
           `;
         })
         .join("");
 
-      document.querySelector("#rankingBody").innerHTML = rows;
+      const historyRows = matches
+        .map((match) => {
+          return `
+            <tr>
+              <td>${formatDate(match.date)}</td>
+              <td>${match.a.join(" / ")}</td>
+              <td class="elo">${match.scoreA} - ${match.scoreB}</td>
+              <td>${match.b.join(" / ")}</td>
+            </tr>
+          `;
+        })
+        .join("");
+
+      document.querySelector("#rankingBody").innerHTML = rankingRows;
+      document.querySelector("#historyBody").innerHTML = historyRows;
     </script>
   </body>
 </html>
