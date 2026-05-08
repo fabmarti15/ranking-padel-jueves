@@ -200,54 +200,6 @@
         font-weight: 900;
       }
 
-      .suggestion-form {
-        display: grid;
-        gap: 12px;
-        margin-top: 24px;
-      }
-
-      textarea,
-      button {
-        font: inherit;
-      }
-
-      textarea {
-        width: 100%;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: white;
-        color: var(--ink);
-        outline: none;
-      }
-
-      textarea {
-        min-height: 150px;
-        padding: 14px;
-        resize: vertical;
-      }
-
-      textarea:focus {
-        border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(22, 122, 69, 0.12);
-      }
-
-      button {
-        min-height: 44px;
-        width: fit-content;
-        border: 0;
-        border-radius: 8px;
-        padding: 0 18px;
-        background: #171717;
-        color: white;
-        font-weight: 850;
-        cursor: pointer;
-      }
-
-      .helper {
-        color: var(--muted);
-        font-size: 0.92rem;
-      }
-
       .explain-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -307,8 +259,8 @@
             cancha.
           </p>
           <div class="quick-stats" aria-label="Resumen del ranking">
-            <span class="quick-stat">8 jugadores</span>
-            <span class="quick-stat">6 partidos</span>
+            <span class="quick-stat">14 jugadores</span>
+            <span class="quick-stat">15 partidos</span>
             <span class="quick-stat">ELO vivo</span>
           </div>
         </div>
@@ -378,34 +330,33 @@
       </section>
 
       <section class="panel">
-        <h2>Sugerencias del publico</h2>
+        <h2>Como funciona el ELO</h2>
         <p class="subtle">
-          Escribe resultados, jugadores nuevos, cambios de nombre o ideas para
-          mejorar el ranking.
+          Todos parten con 1000 puntos. Cada partido mueve puntos: la pareja que
+          gana suma y la pareja que pierde resta.
         </p>
-        <div class="suggestion-form">
-          <textarea
-            id="suggestionText"
-            placeholder="Ejemplos:
-
-Subir resultados:
-Cristian Pérez / Joaquin Villanueva vs Felipe Skewes / Fabian Martinez: 6-4
-Tomas San Juan / Diego Martinez vs Daniel La Roche / Felipe Bindis: 6-3
-
-Agregar jugadores:
-Agregar a Juan Perez
-
-Cambiar nombres:
-Cambiar Felipe Skewes por Pipe Skewes
-
-Sugerencia:
-Podriamos mostrar mejor pareja de la fecha"
-          ></textarea>
-          <button id="sendSuggestion" type="button">Enviar</button>
-          <p class="helper">
-            Para guardar sugerencias sin abrir otra pagina falta conectar un
-            servicio de guardado.
-          </p>
+        <div class="explain-grid">
+          <div class="explain-item">
+            <strong>Ganar sube</strong>
+            <p>
+              Si ganas, cada jugador de tu pareja suma los puntos del partido.
+              Si pierdes, cada jugador pierde esos mismos puntos.
+            </p>
+          </div>
+          <div class="explain-item">
+            <strong>El rival importa</strong>
+            <p>
+              Ganarle a una pareja con mejor ranking vale un poco mas. Ganarle
+              a una pareja con menos ranking vale un poco menos.
+            </p>
+          </div>
+          <div class="explain-item">
+            <strong>El resultado importa</strong>
+            <p>
+              Si ganas 6-0 suma mas que ganar 7-6, porque la diferencia de
+              games tambien cuenta. No es enorme, pero ayuda.
+            </p>
+          </div>
         </div>
       </section>
     </main>
@@ -420,6 +371,12 @@ Podriamos mostrar mejor pareja de la fecha"
         "Joaquin Villanueva",
         "Felipe Bindis",
         "Cristian Pérez",
+        "Terré",
+        "Fabrizio Arnalot",
+        "Lecaros",
+        "Nebe",
+        "Presidente",
+        "Angello",
       ];
 
       const matches = [
@@ -463,6 +420,69 @@ Podriamos mostrar mejor pareja de la fecha"
           a: ["Daniel La Roche", "Felipe Bindis"],
           b: ["Tomas San Juan", "Diego Martinez"],
           scoreA: 3,
+          scoreB: 6,
+        },
+        {
+          date: "2026-05-07",
+          a: ["Fabian Martinez", "Terré"],
+          b: ["Fabrizio Arnalot", "Felipe Bindis"],
+          scoreA: 6,
+          scoreB: 4,
+        },
+        {
+          date: "2026-05-07",
+          a: ["Lecaros", "Joaquin Villanueva"],
+          b: ["Fabian Martinez", "Terré"],
+          scoreA: 7,
+          scoreB: 6,
+        },
+        {
+          date: "2026-05-07",
+          a: ["Fabian Martinez", "Terré"],
+          b: ["Nebe", "Diego Martinez"],
+          scoreA: 6,
+          scoreB: 0,
+        },
+        {
+          date: "2026-05-07",
+          a: ["Lecaros", "Joaquin Villanueva"],
+          b: ["Cristian Pérez", "Tomas San Juan"],
+          scoreA: 6,
+          scoreB: 3,
+        },
+        {
+          date: "2026-05-07",
+          a: ["Cristian Pérez", "Tomas San Juan"],
+          b: ["Nebe", "Diego Martinez"],
+          scoreA: 6,
+          scoreB: 0,
+        },
+        {
+          date: "2026-05-07",
+          a: ["Presidente", "Fabrizio Arnalot"],
+          b: ["Cristian Pérez", "Tomas San Juan"],
+          scoreA: 7,
+          scoreB: 6,
+        },
+        {
+          date: "2026-05-07",
+          a: ["Felipe Skewes", "Fabrizio Arnalot"],
+          b: ["Terré", "Fabian Martinez"],
+          scoreA: 4,
+          scoreB: 6,
+        },
+        {
+          date: "2026-05-07",
+          a: ["Felipe Skewes", "Fabrizio Arnalot"],
+          b: ["Felipe Bindis", "Angello"],
+          scoreA: 7,
+          scoreB: 6,
+        },
+        {
+          date: "2026-05-07",
+          a: ["Felipe Skewes", "Fabrizio Arnalot"],
+          b: ["Tomas San Juan", "Cristian Pérez"],
+          scoreA: 7,
           scoreB: 6,
         },
       ];
@@ -604,17 +624,6 @@ Podriamos mostrar mejor pareja de la fecha"
       document.querySelector("#rankingBody").innerHTML = rankingRows;
       document.querySelector("#historyBody").innerHTML = historyRows;
 
-      document.querySelector("#sendSuggestion").addEventListener("click", () => {
-        const text = document.querySelector("#suggestionText").value.trim();
-        if (!text) {
-          alert("Escribe algo antes de enviar.");
-          return;
-        }
-
-        alert(
-          "Todavia falta conectar un servicio de guardado para que esto llegue al administrador."
-        );
-      });
     </script>
   </body>
 </html>
