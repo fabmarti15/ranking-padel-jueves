@@ -130,6 +130,37 @@
         font-weight: 850;
       }
 
+      .site-stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 24px;
+        max-width: 520px;
+      }
+
+      .site-stat {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px 16px;
+        background: #fafaf8;
+      }
+
+      .site-stat strong {
+        display: block;
+        font-size: 1.6rem;
+        line-height: 1;
+      }
+
+      .site-stat span {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 0.86rem;
+        font-weight: 850;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
       .panel {
         margin-top: 24px;
         padding: clamp(22px, 3vw, 34px);
@@ -305,6 +336,10 @@
           grid-template-columns: 1fr;
         }
 
+        .site-stats {
+          grid-template-columns: 1fr;
+        }
+
         .player-match {
           grid-template-columns: 1fr;
         }
@@ -324,8 +359,18 @@
           </p>
           <div class="quick-stats" aria-label="Resumen del ranking">
             <span class="quick-stat">14 jugadores</span>
-            <span class="quick-stat">15 partidos</span>
+            <span class="quick-stat">17 partidos</span>
             <span class="quick-stat">ELO vivo</span>
+          </div>
+          <div class="site-stats" aria-label="Actividad del sitio">
+            <div class="site-stat">
+              <strong id="visitCount">...</strong>
+              <span>visitas al sitio</span>
+            </div>
+            <div class="site-stat">
+              <strong id="liveCount">Pronto</strong>
+              <span>viendo ahora</span>
+            </div>
           </div>
         </div>
       </section>
@@ -549,6 +594,20 @@
           scoreA: 7,
           scoreB: 6,
         },
+        {
+          date: "2026-05-07",
+          a: ["Lecaros", "Joaquin Villanueva"],
+          b: ["Felipe Bindis", "Angello"],
+          scoreA: 6,
+          scoreB: 2,
+        },
+        {
+          date: "2026-05-07",
+          a: ["Nebe", "Diego Martinez"],
+          b: ["Felipe Bindis", "Angello"],
+          scoreA: 6,
+          scoreB: 0,
+        },
       ];
 
       function calculateRanking() {
@@ -709,6 +768,39 @@
 
       document.querySelector("#rankingBody").innerHTML = rankingRows;
       document.querySelector("#historyBody").innerHTML = historyRows;
+
+      async function updateSiteStats() {
+        const visitCount = document.querySelector("#visitCount");
+        const liveCount = document.querySelector("#liveCount");
+        const isPublishedSite = location.hostname === "fabmarti15.github.io";
+        const counterKey = "ranking-padel-jueves-visitas-v1";
+        const apiBase = "https://countapi.mileshilliard.com/api/v1";
+
+        if (!isPublishedSite) {
+          visitCount.textContent = "Local";
+          liveCount.textContent = "Publico";
+          return;
+        }
+
+        try {
+          const hasCounted = sessionStorage.getItem(counterKey);
+          const endpoint = hasCounted ? "get" : "hit";
+          const response = await fetch(`${apiBase}/${endpoint}/${counterKey}`);
+          const data = await response.json();
+
+          if (!hasCounted) {
+            sessionStorage.setItem(counterKey, "1");
+          }
+
+          visitCount.textContent = Number(data.value || 0).toLocaleString("es-CL");
+        } catch {
+          visitCount.textContent = "N/D";
+        }
+
+        liveCount.textContent = "N/D";
+      }
+
+      updateSiteStats();
 
       document.querySelector("#rankingBody").addEventListener("click", (event) => {
         const row = event.target.closest(".player-row");
