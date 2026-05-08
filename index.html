@@ -48,22 +48,13 @@
       }
 
       .hero {
-        padding: clamp(28px, 4vw, 46px);
+        padding: clamp(24px, 4vw, 40px);
         position: relative;
         overflow: hidden;
       }
 
       .hero::after {
-        content: "";
-        position: absolute;
-        right: clamp(18px, 5vw, 64px);
-        top: 50%;
-        width: clamp(86px, 15vw, 150px);
-        aspect-ratio: 1;
-        border: 12px solid rgba(22, 122, 69, 0.12);
-        border-radius: 50%;
-        transform: translateY(-50%);
-        pointer-events: none;
+        display: none;
       }
 
       h1,
@@ -102,33 +93,52 @@
       .hero-copy {
         position: relative;
         z-index: 1;
-        max-width: 820px;
+        max-width: 920px;
       }
 
-      .hero-lead {
-        max-width: 680px;
-        margin-top: 18px;
-        color: var(--muted);
-        font-size: clamp(1.08rem, 2vw, 1.35rem);
-        font-weight: 650;
-      }
-
-      .quick-stats {
-        display: flex;
-        flex-wrap: wrap;
+      .top-podium {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 10px;
-        margin-top: 26px;
+        margin-top: 22px;
       }
 
-      .quick-stat {
-        min-height: 42px;
+      .podium-card {
+        min-height: 78px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #fafaf8;
+      }
+
+      .podium-medal {
+        width: 38px;
+        height: 38px;
         display: inline-flex;
         align-items: center;
-        padding: 0 16px;
-        border-radius: 999px;
-        background: #171717;
-        color: white;
-        font-weight: 850;
+        justify-content: center;
+        border-radius: 12px;
+        background: white;
+        font-size: 1.35rem;
+        box-shadow: 0 8px 22px rgba(17, 17, 17, 0.06);
+        flex: 0 0 auto;
+      }
+
+      .podium-name {
+        display: block;
+        font-weight: 950;
+        line-height: 1.1;
+      }
+
+      .podium-elo {
+        display: block;
+        margin-top: 4px;
+        color: var(--accent);
+        font-size: 0.9rem;
+        font-weight: 900;
       }
 
       .site-stats {
@@ -230,6 +240,63 @@
       .elo-loss {
         color: var(--danger);
         font-weight: 900;
+      }
+
+      .elo-tip {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        cursor: help;
+        text-decoration: underline;
+        text-decoration-style: dotted;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 5px;
+      }
+
+      .elo-tip::after {
+        content: attr(data-tip);
+        position: absolute;
+        left: 50%;
+        bottom: calc(100% + 12px);
+        width: min(260px, 78vw);
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #171717;
+        color: white;
+        box-shadow: 0 18px 45px rgba(17, 17, 17, 0.18);
+        font-size: 0.84rem;
+        line-height: 1.35;
+        font-weight: 750;
+        white-space: normal;
+        transform: translateX(-50%) translateY(4px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.16s ease, transform 0.16s ease;
+        z-index: 20;
+      }
+
+      .elo-tip::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: calc(100% + 5px);
+        width: 12px;
+        height: 12px;
+        background: #171717;
+        transform: translateX(-50%) rotate(45deg);
+        opacity: 0;
+        transition: opacity 0.16s ease;
+        z-index: 19;
+      }
+
+      .elo-tip:hover::after,
+      .elo-tip:hover::before {
+        opacity: 1;
+      }
+
+      .elo-tip:hover::after {
+        transform: translateX(-50%) translateY(0);
       }
 
       .player-row {
@@ -381,6 +448,14 @@
           padding: 22px;
         }
 
+        .top-podium {
+          grid-template-columns: 1fr;
+        }
+
+        .podium-card {
+          min-height: 68px;
+        }
+
         .hero::after {
           display: none;
         }
@@ -399,17 +474,8 @@
     <main class="app">
       <section class="hero">
         <div class="hero-copy">
-          <p class="kicker">Jueves de padel</p>
-          <h1>La tabla no miente</h1>
-          <p class="hero-lead">
-            Puntos, paleteos y memoria oficial para saber quien manda en la
-            cancha.
-          </p>
-          <div class="quick-stats" aria-label="Resumen del ranking">
-            <span class="quick-stat">14 jugadores</span>
-            <span class="quick-stat">17 partidos</span>
-            <span class="quick-stat">ELO vivo</span>
-          </div>
+          <p class="kicker">Americanos de los jueves</p>
+          <div class="top-podium" id="topPodium" aria-label="Podio top 3"></div>
           <div class="site-stats" aria-label="Actividad del sitio">
             <div class="site-stat">
               <span>Historico de visitas:</span>
@@ -527,36 +593,36 @@
         "Felipe Skewes",
         "Tomas San Juan",
         "Daniel La Roche",
-        "Fabian Martinez",
+        "Fabián Martínez",
         "Diego Martinez",
         "Joaquin Villanueva",
         "Felipe Bindis",
         "Cristian Pérez",
-        "Terré",
+        "Nicolás Terré",
         "Fabrizio Arnalot",
-        "Lecaros",
-        "Nebe",
-        "Angello",
+        "José Manuel Lecaros",
+        "Karl Nebe",
+        "Angello Tapia",
       ];
 
       const matches = [
         {
           date: "2026-04-30",
           a: ["Cristian Pérez", "Joaquin Villanueva"],
-          b: ["Felipe Skewes", "Fabian Martinez"],
+          b: ["Felipe Skewes", "Fabián Martínez"],
           scoreA: 6,
           scoreB: 4,
         },
         {
           date: "2026-04-30",
-          a: ["Felipe Skewes", "Fabian Martinez"],
+          a: ["Felipe Skewes", "Fabián Martínez"],
           b: ["Daniel La Roche", "Felipe Bindis"],
           scoreA: 6,
           scoreB: 3,
         },
         {
           date: "2026-04-30",
-          a: ["Felipe Skewes", "Fabian Martinez"],
+          a: ["Felipe Skewes", "Fabián Martínez"],
           b: ["Tomas San Juan", "Diego Martinez"],
           scoreA: 6,
           scoreB: 3,
@@ -584,21 +650,21 @@
         },
         {
           date: "2026-05-07",
-          a: ["Lecaros", "Joaquin Villanueva"],
-          b: ["Fabian Martinez", "Terré"],
+          a: ["José Manuel Lecaros", "Joaquin Villanueva"],
+          b: ["Fabián Martínez", "Nicolás Terré"],
           scoreA: 7,
           scoreB: 6,
         },
         {
           date: "2026-05-07",
-          a: ["Fabian Martinez", "Terré"],
-          b: ["Nebe", "Diego Martinez"],
+          a: ["Fabián Martínez", "Nicolás Terré"],
+          b: ["Karl Nebe", "Diego Martinez"],
           scoreA: 6,
           scoreB: 0,
         },
         {
           date: "2026-05-07",
-          a: ["Lecaros", "Joaquin Villanueva"],
+          a: ["José Manuel Lecaros", "Joaquin Villanueva"],
           b: ["Cristian Pérez", "Tomas San Juan"],
           scoreA: 6,
           scoreB: 3,
@@ -606,21 +672,21 @@
         {
           date: "2026-05-07",
           a: ["Cristian Pérez", "Tomas San Juan"],
-          b: ["Nebe", "Diego Martinez"],
+          b: ["Karl Nebe", "Diego Martinez"],
           scoreA: 6,
           scoreB: 0,
         },
         {
           date: "2026-05-07",
           a: ["Felipe Skewes", "Fabrizio Arnalot"],
-          b: ["Terré", "Fabian Martinez"],
+          b: ["Nicolás Terré", "Fabián Martínez"],
           scoreA: 4,
           scoreB: 6,
         },
         {
           date: "2026-05-07",
           a: ["Felipe Skewes", "Fabrizio Arnalot"],
-          b: ["Felipe Bindis", "Angello"],
+          b: ["Felipe Bindis", "Angello Tapia"],
           scoreA: 7,
           scoreB: 6,
         },
@@ -633,15 +699,15 @@
         },
         {
           date: "2026-05-07",
-          a: ["Lecaros", "Joaquin Villanueva"],
-          b: ["Felipe Bindis", "Angello"],
+          a: ["José Manuel Lecaros", "Joaquin Villanueva"],
+          b: ["Felipe Bindis", "Angello Tapia"],
           scoreA: 6,
           scoreB: 2,
         },
         {
           date: "2026-05-07",
-          a: ["Nebe", "Diego Martinez"],
-          b: ["Felipe Bindis", "Angello"],
+          a: ["Karl Nebe", "Diego Martinez"],
+          b: ["Felipe Bindis", "Angello Tapia"],
           scoreA: 6,
           scoreB: 0,
         },
@@ -776,7 +842,8 @@
               before,
               after,
             };
-          });
+          })
+          .reverse();
       }
 
       function average(values) {
@@ -785,11 +852,56 @@
 
       function formatDate(value) {
         const [year, month, day] = value.split("-");
-        return `${day}-${month}-${year}`;
+        const months = {
+          "01": "Ene.",
+          "02": "Feb.",
+          "03": "Mar.",
+          "04": "Abr.",
+          "05": "May.",
+          "06": "Jun.",
+          "07": "Jul.",
+          "08": "Ago.",
+          "09": "Sep.",
+          "10": "Oct.",
+          "11": "Nov.",
+          "12": "Dic.",
+        };
+
+        return `${Number(day)} de ${months[month]}`;
       }
 
       function formatSigned(value) {
         return `${value > 0 ? "+" : ""}${Math.round(value)}`;
+      }
+
+      function shortName(name) {
+        const shortNames = {
+          "Karl Nebe": "Karl",
+          "Nicolás Terré": "Nicolás",
+          "José Manuel Lecaros": "José Manuel",
+          "Angello Tapia": "Angello",
+        };
+        return shortNames[name] || name.split(" ")[0];
+      }
+
+      function renderTopPodium() {
+        const container = document.querySelector("#topPodium");
+        if (!container) return;
+
+        const medals = ["🥇", "🥈", "🥉"];
+        const topPlayers = calculateRanking().slice(0, 3);
+
+        container.innerHTML = topPlayers
+          .map((player, index) => `
+            <div class="podium-card">
+              <span class="podium-medal">${medals[index]}</span>
+              <span>
+                <span class="podium-name">${player.name}</span>
+                <span class="podium-elo">${Math.round(player.elo)} Pts.</span>
+              </span>
+            </div>
+          `)
+          .join("");
       }
 
       const rankingRows = calculateRanking()
@@ -799,7 +911,7 @@
             <tr class="player-row" data-player-name="${player.name}">
               <td><span class="rank-badge ${rankClass}">${index + 1}</span></td>
               <td>${player.name}</td>
-              <td class="elo">${Math.round(player.elo)}</td>
+              <td class="elo"><span class="elo-tip" data-tip="ELO es el puntaje vivo del ranking. Sube si ganas y baja si pierdes. Influye el nivel del rival y la diferencia de games. Para más info, anda al final de la página.">${Math.round(player.elo)}</span></td>
               <td>${player.played}</td>
               <td>${player.wins}</td>
               <td>${player.losses}</td>
@@ -810,6 +922,8 @@
         .join("");
 
       const historyRows = getHistoryMatches()
+        .slice()
+        .reverse()
         .map((match) => {
           return `
             <tr>
@@ -909,6 +1023,7 @@
 
       updateSiteStats();
       updateLivePresence();
+      renderTopPodium();
 
       document.querySelector("#rankingBody").addEventListener("click", (event) => {
         const row = event.target.closest(".player-row");
@@ -941,8 +1056,8 @@
               <div class="player-history-title">Partidos de ${playerName}</div>
 
               <div class="player-summary">
-                <span class="summary-pill">Saldo <strong class="${totalChange >= 0 ? "elo" : "elo-loss"}">${formatSigned(totalChange)} ELO</strong></span>
-                <span class="summary-pill">ELO final <strong>${Math.round(finalElo)}</strong></span>
+                <span class="summary-pill">Saldo <strong class="${totalChange >= 0 ? "elo" : "elo-loss"}">${formatSigned(totalChange)} Pts.</strong></span>
+                <span class="summary-pill">Pts. finales <strong>${Math.round(finalElo)}</strong></span>
                 <span class="summary-pill">Record <strong>${wins}G / ${losses}P</strong></span>
               </div>
 
@@ -959,7 +1074,7 @@
                       <span class="${resultClass}">${resultText}</span>
                       <span>vs <strong>${match.rivalTeam.join(" / ")}</strong></span>
                       <span class="scoreline">${match.playerScore} - ${match.rivalScore}</span>
-                      <span class="elo-badge ${match.change < 0 ? "loss" : ""}">${formatSigned(match.change)} ELO</span>
+                      <span class="elo-badge ${match.change < 0 ? "loss" : ""}">${formatSigned(match.change)} Pts.</span>
                     </div>
                   `;
                 })
