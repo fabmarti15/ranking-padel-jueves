@@ -12,6 +12,7 @@
         --muted: #73706c;
         --line: #e4e1dc;
         --accent: #167a45;
+        --danger: #9f2f24;
         --gold: #fff1a8;
         --silver: #ededed;
         --bronze: #f4dccb;
@@ -226,6 +227,11 @@
         font-weight: 900;
       }
 
+      .elo-loss {
+        color: var(--danger);
+        font-weight: 900;
+      }
+
       .player-row {
         cursor: pointer;
       }
@@ -255,9 +261,61 @@
         font-weight: 900;
       }
 
+      .player-summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .summary-pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        padding: 0 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: white;
+        color: var(--muted);
+        font-size: 0.92rem;
+        font-weight: 850;
+      }
+
+      .summary-pill strong {
+        margin-left: 5px;
+        color: var(--ink);
+      }
+
+      .scoreline {
+        color: var(--ink) !important;
+        font-weight: 900 !important;
+      }
+
+      .elo-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        min-width: 88px;
+        min-height: 34px;
+        padding: 0 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(22, 122, 69, 0.22);
+        background: #f3faf6;
+        color: var(--accent) !important;
+        font-size: 0.92rem !important;
+        font-weight: 950 !important;
+        letter-spacing: 0.01em;
+      }
+
+      .elo-badge.loss {
+        border-color: rgba(159, 47, 36, 0.22);
+        background: #fff4f2;
+        color: var(--danger) !important;
+      }
+
       .player-match {
         display: grid;
-        grid-template-columns: minmax(110px, 0.7fr) minmax(220px, 1.4fr) minmax(80px, 0.5fr) minmax(220px, 1.4fr) minmax(90px, 0.5fr);
+        grid-template-columns: minmax(100px, 0.65fr) minmax(200px, 1.35fr) minmax(76px, 0.45fr) minmax(210px, 1.35fr) minmax(72px, 0.4fr) minmax(100px, 0.45fr);
         gap: 12px;
         align-items: center;
         padding: 12px;
@@ -277,13 +335,13 @@
       }
 
       .match-win {
-        color: var(--accent);
-        font-weight: 900;
+        color: var(--accent) !important;
+        font-weight: 900 !important;
       }
 
       .match-loss {
-        color: #9f2f24;
-        font-weight: 900;
+        color: var(--danger) !important;
+        font-weight: 900 !important;
       }
 
       .explain-grid {
@@ -334,7 +392,6 @@
         .player-match {
           grid-template-columns: 1fr;
         }
-
       }
     </style>
   </head>
@@ -368,7 +425,7 @@
 
       <section class="panel">
         <h2>Tabla caliente</h2>
-        <p class="subtle">El orden actual de la casa.</p>
+        <p class="subtle">El orden actual de la casa. Haz click en un jugador para ver su saldo ELO partido a partido.</p>
         <div class="table-wrap">
           <table>
             <thead>
@@ -657,6 +714,7 @@
 
       function getHistoryMatches() {
         const stats = new Map();
+
         playerNames.forEach((name) => {
           stats.set(name, {
             elo: 1000,
@@ -667,19 +725,28 @@
           const eloA = average(match.a.map((name) => stats.get(name).elo));
           const eloB = average(match.b.map((name) => stats.get(name).elo));
           const points = getMatchDelta(match, eloA, eloB);
-          const winner = match.scoreA > match.scoreB ? match.a : match.b;
-          const loser = match.scoreA > match.scoreB ? match.b : match.a;
+          const aWon = match.scoreA > match.scoreB;
+          const winner = aWon ? match.a : match.b;
+          const playerChanges = {};
 
-          winner.forEach((name) => {
-            stats.get(name).elo += points;
-          });
-          loser.forEach((name) => {
-            stats.get(name).elo -= points;
+          [...match.a, ...match.b].forEach((name) => {
+            const before = stats.get(name).elo;
+            const change = winner.includes(name) ? points : -points;
+            const after = before + change;
+
+            playerChanges[name] = {
+              before,
+              change,
+              after,
+            };
+
+            stats.get(name).elo = after;
           });
 
           return {
             ...match,
             points,
+            playerChanges,
           };
         });
       }
@@ -694,6 +761,9 @@
             const playerScore = isTeamA ? match.scoreA : match.scoreB;
             const rivalScore = isTeamA ? match.scoreB : match.scoreA;
             const won = playerScore > rivalScore;
+            const change = match.playerChanges[playerName].change;
+            const before = match.playerChanges[playerName].before;
+            const after = match.playerChanges[playerName].after;
 
             return {
               ...match,
@@ -702,6 +772,9 @@
               playerScore,
               rivalScore,
               won,
+              change,
+              before,
+              after,
             };
           });
       }
@@ -713,6 +786,10 @@
       function formatDate(value) {
         const [year, month, day] = value.split("-");
         return `${day}-${month}-${year}`;
+      }
+
+      function formatSigned(value) {
+        return `${value > 0 ? "+" : ""}${Math.round(value)}`;
       }
 
       const rankingRows = calculateRanking()
@@ -849,6 +926,12 @@
 
         if (opened) return;
 
+        const playerHistory = getPlayerHistory(playerName);
+        const totalChange = playerHistory.reduce((sum, match) => sum + match.change, 0);
+        const finalElo = 1000 + totalChange;
+        const wins = playerHistory.filter((match) => match.won).length;
+        const losses = playerHistory.length - wins;
+
         row.classList.add("active");
         const detailRow = document.createElement("tr");
         detailRow.className = "player-detail";
@@ -856,19 +939,27 @@
           <td colspan="7">
             <div class="player-history">
               <div class="player-history-title">Partidos de ${playerName}</div>
-              ${getPlayerHistory(playerName)
+
+              <div class="player-summary">
+                <span class="summary-pill">Saldo <strong class="${totalChange >= 0 ? "elo" : "elo-loss"}">${formatSigned(totalChange)} ELO</strong></span>
+                <span class="summary-pill">ELO final <strong>${Math.round(finalElo)}</strong></span>
+                <span class="summary-pill">Record <strong>${wins}G / ${losses}P</strong></span>
+              </div>
+
+              ${playerHistory
                 .map((match) => {
                   const resultClass = match.won ? "match-win" : "match-loss";
                   const resultText = match.won ? "Gano" : "Perdio";
-                  const pointsText = match.won ? `+${match.points}` : `-${match.points}`;
+                  const partner = match.playerTeam.filter((name) => name !== playerName).join(" / ");
 
                   return `
                     <div class="player-match">
                       <span>${formatDate(match.date)}</span>
-                      <span>Con <strong>${match.playerTeam.filter((name) => name !== playerName).join(" / ")}</strong></span>
+                      <span>Con <strong>${partner}</strong></span>
                       <span class="${resultClass}">${resultText}</span>
                       <span>vs <strong>${match.rivalTeam.join(" / ")}</strong></span>
-                      <span class="elo">${match.playerScore} - ${match.rivalScore} · ${pointsText}</span>
+                      <span class="scoreline">${match.playerScore} - ${match.rivalScore}</span>
+                      <span class="elo-badge ${match.change < 0 ? "loss" : ""}">${formatSigned(match.change)} ELO</span>
                     </div>
                   `;
                 })
@@ -878,7 +969,6 @@
         `;
         row.insertAdjacentElement("afterend", detailRow);
       });
-
     </script>
   </body>
 </html>
