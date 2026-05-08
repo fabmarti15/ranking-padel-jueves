@@ -131,34 +131,29 @@
       }
 
       .site-stats {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-        margin-top: 24px;
-        max-width: 520px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 18px;
       }
 
       .site-stat {
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        padding: 14px 16px;
-        background: #fafaf8;
+        display: inline-flex;
+        align-items: baseline;
+        gap: 7px;
+        color: var(--muted);
+        font-size: 0.92rem;
+        font-weight: 750;
       }
 
       .site-stat strong {
-        display: block;
-        font-size: 1.6rem;
-        line-height: 1;
+        color: var(--ink);
+        font-size: 0.95rem;
+        font-weight: 900;
       }
 
       .site-stat span {
-        display: block;
-        margin-top: 6px;
-        color: var(--muted);
-        font-size: 0.86rem;
-        font-weight: 850;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
+        display: inline;
       }
 
       .panel {
@@ -336,10 +331,6 @@
           grid-template-columns: 1fr;
         }
 
-        .site-stats {
-          grid-template-columns: 1fr;
-        }
-
         .player-match {
           grid-template-columns: 1fr;
         }
@@ -364,12 +355,12 @@
           </div>
           <div class="site-stats" aria-label="Actividad del sitio">
             <div class="site-stat">
-              <strong id="visitCount">...</strong>
-              <span>visitas al sitio</span>
+              <span>Historico de visitas:</span>
+              <strong id="visitCount">21</strong>
             </div>
             <div class="site-stat">
-              <strong id="liveCount">Pronto</strong>
-              <span>viendo ahora</span>
+              <span>Viendo ahora mismo:</span>
+              <strong id="liveCount">1</strong>
             </div>
           </div>
         </div>
@@ -470,7 +461,11 @@
       </section>
     </main>
 
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
     <script>
+      const firebaseConfig = null;
+
       const playerNames = [
         "Felipe Skewes",
         "Tomas San Juan",
@@ -773,12 +768,13 @@
         const visitCount = document.querySelector("#visitCount");
         const liveCount = document.querySelector("#liveCount");
         const isPublishedSite = location.hostname === "fabmarti15.github.io";
-        const counterKey = "ranking-padel-jueves-visitas-v1";
+        const counterKey = "ranking-padel-jueves-visitas-v2";
         const apiBase = "https://countapi.mileshilliard.com/api/v1";
+        const startingVisits = 21;
 
         if (!isPublishedSite) {
-          visitCount.textContent = "Local";
-          liveCount.textContent = "Publico";
+          visitCount.textContent = startingVisits;
+          liveCount.textContent = "1";
           return;
         }
 
@@ -792,15 +788,65 @@
             sessionStorage.setItem(counterKey, "1");
           }
 
-          visitCount.textContent = Number(data.value || 0).toLocaleString("es-CL");
+          const totalVisits = startingVisits + Number(data.value || 0);
+          visitCount.textContent = totalVisits.toLocaleString("es-CL");
         } catch {
-          visitCount.textContent = "N/D";
+          visitCount.textContent = startingVisits;
         }
 
-        liveCount.textContent = "N/D";
+        liveCount.textContent = "1";
+      }
+
+      function updateLivePresence() {
+        const liveCount = document.querySelector("#liveCount");
+
+        if (!firebaseConfig || !window.firebase) {
+          liveCount.textContent = "1";
+          return;
+        }
+
+        try {
+          const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
+          const database = app.database();
+          const sessionId =
+            sessionStorage.getItem("padel-live-session") ||
+            (window.crypto && crypto.randomUUID ? crypto.randomUUID() : String(Date.now()));
+
+          sessionStorage.setItem("padel-live-session", sessionId);
+
+          const presenceRef = database.ref(`presence/${sessionId}`);
+          const connectedRef = database.ref(".info/connected");
+
+          connectedRef.on("value", (snapshot) => {
+            if (snapshot.val() !== true) return;
+            presenceRef
+              .onDisconnect()
+              .remove()
+              .then(() => {
+                presenceRef.set({
+                  online: true,
+                  lastSeen: firebase.database.ServerValue.TIMESTAMP,
+                });
+              });
+          });
+
+          setInterval(() => {
+            presenceRef.update({
+              lastSeen: firebase.database.ServerValue.TIMESTAMP,
+            });
+          }, 20000);
+
+          database.ref("presence").on("value", (snapshot) => {
+            const activeUsers = snapshot.exists() ? Object.keys(snapshot.val()).length : 1;
+            liveCount.textContent = Math.max(1, activeUsers);
+          });
+        } catch {
+          liveCount.textContent = "1";
+        }
       }
 
       updateSiteStats();
+      updateLivePresence();
 
       document.querySelector("#rankingBody").addEventListener("click", (event) => {
         const row = event.target.closest(".player-row");
