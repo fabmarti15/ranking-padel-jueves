@@ -200,6 +200,66 @@
         font-weight: 900;
       }
 
+      .player-row {
+        cursor: pointer;
+      }
+
+      .player-row:hover td {
+        background: #fafaf8;
+      }
+
+      .player-row.active td {
+        background: rgba(22, 122, 69, 0.07);
+      }
+
+      .player-detail td {
+        padding: 0;
+        background: #fafaf8;
+      }
+
+      .player-history {
+        display: grid;
+        gap: 10px;
+        padding: 18px 14px 20px;
+        white-space: normal;
+      }
+
+      .player-history-title {
+        font-size: 1rem;
+        font-weight: 900;
+      }
+
+      .player-match {
+        display: grid;
+        grid-template-columns: minmax(110px, 0.7fr) minmax(220px, 1.4fr) minmax(80px, 0.5fr) minmax(220px, 1.4fr) minmax(90px, 0.5fr);
+        gap: 12px;
+        align-items: center;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: white;
+      }
+
+      .player-match span {
+        color: var(--muted);
+        font-size: 0.94rem;
+        font-weight: 750;
+      }
+
+      .player-match strong {
+        color: var(--ink);
+      }
+
+      .match-win {
+        color: var(--accent);
+        font-weight: 900;
+      }
+
+      .match-loss {
+        color: #9f2f24;
+        font-weight: 900;
+      }
+
       .explain-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -242,6 +302,10 @@
         }
 
         .explain-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .player-match {
           grid-template-columns: 1fr;
         }
 
@@ -581,6 +645,28 @@
         });
       }
 
+      function getPlayerHistory(playerName) {
+        return getHistoryMatches()
+          .filter((match) => [...match.a, ...match.b].includes(playerName))
+          .map((match) => {
+            const isTeamA = match.a.includes(playerName);
+            const playerTeam = isTeamA ? match.a : match.b;
+            const rivalTeam = isTeamA ? match.b : match.a;
+            const playerScore = isTeamA ? match.scoreA : match.scoreB;
+            const rivalScore = isTeamA ? match.scoreB : match.scoreA;
+            const won = playerScore > rivalScore;
+
+            return {
+              ...match,
+              playerTeam,
+              rivalTeam,
+              playerScore,
+              rivalScore,
+              won,
+            };
+          });
+      }
+
       function average(values) {
         return values.reduce((sum, value) => sum + value, 0) / values.length;
       }
@@ -594,7 +680,7 @@
         .map((player, index) => {
           const rankClass = index === 0 ? "rank-1" : index === 2 ? "rank-3" : "";
           return `
-            <tr>
+            <tr class="player-row" data-player-name="${player.name}">
               <td><span class="rank-badge ${rankClass}">${index + 1}</span></td>
               <td>${player.name}</td>
               <td class="elo">${Math.round(player.elo)}</td>
@@ -623,6 +709,52 @@
 
       document.querySelector("#rankingBody").innerHTML = rankingRows;
       document.querySelector("#historyBody").innerHTML = historyRows;
+
+      document.querySelector("#rankingBody").addEventListener("click", (event) => {
+        const row = event.target.closest(".player-row");
+        if (!row) return;
+
+        const playerName = row.dataset.playerName;
+        const opened = row.classList.contains("active");
+
+        document.querySelectorAll(".player-row").forEach((item) => {
+          item.classList.remove("active");
+        });
+        document.querySelectorAll(".player-detail").forEach((item) => {
+          item.remove();
+        });
+
+        if (opened) return;
+
+        row.classList.add("active");
+        const detailRow = document.createElement("tr");
+        detailRow.className = "player-detail";
+        detailRow.innerHTML = `
+          <td colspan="7">
+            <div class="player-history">
+              <div class="player-history-title">Partidos de ${playerName}</div>
+              ${getPlayerHistory(playerName)
+                .map((match) => {
+                  const resultClass = match.won ? "match-win" : "match-loss";
+                  const resultText = match.won ? "Gano" : "Perdio";
+                  const pointsText = match.won ? `+${match.points}` : `-${match.points}`;
+
+                  return `
+                    <div class="player-match">
+                      <span>${formatDate(match.date)}</span>
+                      <span>Con <strong>${match.playerTeam.filter((name) => name !== playerName).join(" / ")}</strong></span>
+                      <span class="${resultClass}">${resultText}</span>
+                      <span>vs <strong>${match.rivalTeam.join(" / ")}</strong></span>
+                      <span class="elo">${match.playerScore} - ${match.rivalScore} · ${pointsText}</span>
+                    </div>
+                  `;
+                })
+                .join("")}
+            </div>
+          </td>
+        `;
+        row.insertAdjacentElement("afterend", detailRow);
+      });
 
     </script>
   </body>
