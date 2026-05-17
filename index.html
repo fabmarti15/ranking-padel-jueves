@@ -1,1 +1,376 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ranking Padel Jueves</title><style>:root{--bg:#f4f4f1;--c:#fff;--i:#171717;--m:#73706c;--l:#e4e1dc;--g:#167a45;--r:#ff2b2b;--y:#fff1a8;--b:#f4dccb;--s:0 18px 45px #1111;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}body{margin:0;overflow-x:hidden;color:var(--i);background:radial-gradient(circle at 0 0,#167a4514,transparent 30rem),var(--bg)}.app{width:min(760px,100%);margin:auto;padding:10px}.card{background:var(--c);border:1px solid var(--l);border-radius:14px;box-shadow:var(--s);padding:clamp(16px,4vw,28px)}.panel{margin-top:18px;overflow:hidden}h1,h2,p{margin:0}h1{font-size:clamp(2.25rem,9vw,4.4rem);line-height:.9;letter-spacing:-.06em}h2{font-size:clamp(1.8rem,6vw,3rem);line-height:.95;letter-spacing:-.05em}.muted{color:var(--m)}.kings{margin-top:24px;padding:18px;border:1px solid #167a452e;border-radius:20px;background:linear-gradient(135deg,#167a450f,#fffffff5),#fafaf8;box-shadow:0 18px 45px #1111}.label{display:inline-flex;gap:6px;color:var(--g);font-size:.72rem;font-weight:950;letter-spacing:.1em;text-transform:uppercase}.king-name{display:block;margin-top:10px;font-size:clamp(1.35rem,6vw,2.2rem);line-height:.98;font-weight:950;letter-spacing:-.055em;overflow-wrap:anywhere}.pill{display:inline-flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding:7px 11px;border-radius:999px;background:#167a4514;color:var(--g);font-size:.86rem;font-weight:950}.king-list{display:grid;margin-top:18px;padding-top:10px;border-top:1px solid var(--l);color:var(--m);font-size:.92rem;font-weight:850}.king-row{display:grid;grid-template-columns:48px 1fr;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #e4e1dcbf}.king-row:last-child{border:0}.score{color:var(--i);font-weight:950}.rival{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.egg{display:inline-flex;margin-left:4px;font-size:1rem;cursor:help;animation:e 1.35s ease-in-out infinite;transform-origin:bottom}.tip{position:relative}.tip:after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 10px);width:min(260px,80vw);padding:10px 12px;border-radius:10px;background:#171717;color:white;font-size:.78rem;line-height:1.25;font-weight:800;white-space:normal;transform:translateX(-50%) translateY(4px);opacity:0;pointer-events:none;transition:.16s;z-index:3}.tip:hover:after,.tip:focus:after{opacity:1;transform:translateX(-50%)}@keyframes e{45%{transform:translateY(-5px) rotate(5deg)}0%,100%{transform:translateY(0) rotate(-5deg)}}.stats{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:18px;color:var(--m);font-size:.82rem;font-weight:750}.stats strong{color:var(--i);font-weight:900}.list{margin-top:16px}.player{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--l);cursor:pointer}.player:last-child{border:0}.player.active{background:#167a450d;margin:0 -10px;padding:14px 10px;border-radius:12px}.rank{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:#ededed;font-weight:900}.rank1{background:var(--y)}.rank3{background:var(--b)}.p-name{display:block;font-size:1rem;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.p-meta{display:flex;align-items:center;gap:8px;margin-top:6px;color:var(--m);font-size:.75rem;font-weight:850;white-space:nowrap;line-height:1.1}.bar{width:72px;height:6px;border-radius:999px;background:var(--r);overflow:hidden;flex:0 0 72px}.bar span{display:block;height:100%;border-radius:999px;background:var(--g)}.pts{text-align:right}.pts b{display:block;font-size:1.25rem;color:var(--g);line-height:1}.pts small{color:var(--m);font-size:.68rem;font-weight:900;text-transform:uppercase}.elo{color:var(--g);font-weight:900}.loss{color:#d71919!important}.detail{display:block;width:100%;white-space:normal}.hist{display:grid;gap:12px;padding:14px 0 16px}.sum{display:grid;grid-template-columns:1fr 1fr;gap:8px}.box{min-height:64px;display:grid;align-content:center;gap:6px;padding:10px;border:1px solid var(--l);border-radius:14px;background:white}.box small{color:var(--m);font-size:.64rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.box b{font-size:1.18rem;line-height:1;font-weight:950}.day{margin-top:4px;color:var(--m);font-size:.84rem;font-weight:950}.match{display:grid;grid-template-columns:26px 1fr auto;grid-template-areas:"res copy copy" ". sc mp";gap:6px 8px;align-items:center;padding:10px;border:1px solid var(--l);border-radius:12px;background:white}.win{border-color:#167a4521;background:#167a4512}.lose{border-color:#ff2b2b47;background:#ff2b2b1a}.res{grid-area:res}.copy{grid-area:copy;min-width:0;color:var(--m);font-size:.78rem;line-height:1.25}.copy strong{color:var(--i)}.sc{grid-area:sc;text-align:left;font-size:.8rem;font-weight:950}.mp{grid-area:mp;display:inline-flex;justify-content:center;align-items:center;min-height:28px;padding:0 8px;border-radius:8px;border:1px solid #167a4538;background:#f3faf6;color:var(--g);font-size:.78rem;font-weight:950;justify-self:end}.mp.loss{border-color:#ff2b2b57;background:#ff2b2b1f}.wrap{margin-top:16px;overflow-x:auto}table{width:100%;min-width:620px;border-collapse:collapse}th,td{padding:10px 8px;text-align:left;border-bottom:1px solid var(--l);white-space:nowrap;font-size:.78rem}th{color:var(--m);font-size:.62rem;letter-spacing:.07em;text-transform:uppercase}.exp{display:grid;gap:12px;margin-top:18px}.exp div{border:1px solid var(--l);border-radius:8px;padding:16px;background:#fafaf8}.exp strong{display:block;margin-bottom:8px}.exp p{color:var(--m);font-weight:650;line-height:1.35}@media(max-width:420px){.app{padding:8px}.card{padding:14px}.player{grid-template-columns:36px 1fr 56px;gap:8px;padding:12px 0}.player.active{margin:0 -8px;padding:12px 8px}.rank{width:32px;height:32px;font-size:.92rem}.p-name{font-size:.94rem}.p-meta{font-size:.66rem;gap:6px;margin-top:4px}.bar{width:50px;height:5px;flex-basis:50px}.pts b{font-size:1.08rem}.pts small{font-size:.6rem}}@media(max-width:360px){.player{grid-template-columns:32px 1fr 50px;gap:6px;padding:10px 0}.rank{width:28px;height:28px;font-size:.84rem}.p-name{font-size:.86rem}.p-meta{font-size:.58rem;gap:5px;margin-top:3px}.bar{width:38px;height:4px;flex-basis:38px}.pts b{font-size:.98rem}.pts small{font-size:.54rem}}</style></head><body><main class="app"><section class="card"><h1>Americanos de los jueves</h1><div class="kings" id="kings"></div><div class="stats"><span>Histórico de visitas: <strong id="visits">21</strong></span><span>Viendo ahora mismo: <strong>1</strong></span></div></section><section class="card panel"><h2>Ranking oficial</h2><div class="list" id="ranking"></div></section><section class="card panel"><h2>Historial</h2><p class="muted">Resultados cargados por fecha y puntos ELO en juego.</p><div class="wrap"><table><thead><tr><th>Fecha</th><th>Pareja A</th><th>Resultado</th><th>Pareja B</th><th>Puntos</th></tr></thead><tbody id="results"></tbody></table></div><div class="exp"><div><strong>Que significa puntos</strong><p>Es lo que gana cada jugador de la pareja vencedora y pierde cada jugador de la pareja derrotada.</p></div><div><strong>Como se calcula</strong><p>Parte en 28 puntos. Si ganas por más games sube un poco. Si le ganas a una pareja con mejor ELO, también vale más.</p></div><div><strong>Como mejorar</strong><p>Ganar partidos suma ELO. Ganarle a parejas fuertes y cerrar sets con buena diferencia acelera la subida.</p></div></div></section><section class="card panel"><h2>Como funciona el ELO</h2><p class="muted">Todos parten con 1000 puntos. Cada partido mueve puntos: la pareja que gana suma y la pareja que pierde resta.</p><div class="exp"><div><strong>Ganar sube</strong><p>Si ganas, cada jugador de tu pareja suma los puntos del partido. Si pierdes, cada jugador pierde esos mismos puntos.</p></div><div><strong>El rival importa</strong><p>Ganarle a una pareja con mejor ranking vale un poco más. Ganarle a una pareja con menos ranking vale un poco menos.</p></div><div><strong>El resultado importa</strong><p>Si ganas 6-0 suma más que ganar 7-6, porque la diferencia de games también cuenta.</p></div></div></section></main><script>const P=["Felipe Skewes","Tomas San Juan","Daniel La Roche","Fabián Martínez","Diego Martinez","Joaquin Villanueva","Felipe Bindis","Cristian Pérez","Nicolás Terré","Fabrizio Arnalot","José Manuel Lecaros","Karl Nebe","Angello Tapia"],G=[["2026-04-30",["Cristian Pérez","Joaquin Villanueva"],["Felipe Skewes","Fabián Martínez"],6,4],["2026-04-30",["Felipe Skewes","Fabián Martínez"],["Daniel La Roche","Felipe Bindis"],6,3],["2026-04-30",["Felipe Skewes","Fabián Martínez"],["Tomas San Juan","Diego Martinez"],6,3],["2026-04-30",["Cristian Pérez","Joaquin Villanueva"],["Daniel La Roche","Felipe Bindis"],6,3],["2026-04-30",["Cristian Pérez","Joaquin Villanueva"],["Tomas San Juan","Diego Martinez"],6,4],["2026-04-30",["Daniel La Roche","Felipe Bindis"],["Tomas San Juan","Diego Martinez"],3,6],["2026-05-07",["José Manuel Lecaros","Joaquin Villanueva"],["Fabián Martínez","Nicolás Terré"],7,6],["2026-05-07",["Fabián Martínez","Nicolás Terré"],["Karl Nebe","Diego Martinez"],6,0],["2026-05-07",["José Manuel Lecaros","Joaquin Villanueva"],["Cristian Pérez","Tomas San Juan"],6,3],["2026-05-07",["Cristian Pérez","Tomas San Juan"],["Karl Nebe","Diego Martinez"],6,0],["2026-05-07",["Felipe Skewes","Fabrizio Arnalot"],["Nicolás Terré","Fabián Martínez"],4,6],["2026-05-07",["Felipe Skewes","Fabrizio Arnalot"],["Felipe Bindis","Angello Tapia"],7,6],["2026-05-07",["Felipe Skewes","Fabrizio Arnalot"],["Tomas San Juan","Cristian Pérez"],7,6],["2026-05-07",["José Manuel Lecaros","Joaquin Villanueva"],["Felipe Bindis","Angello Tapia"],6,2],["2026-05-07",["Karl Nebe","Diego Martinez"],["Felipe Bindis","Angello Tapia"],6,0]].map(([d,a,b,sa,sb])=>({d,a,b,sa,sb})),$=s=>document.querySelector(s),av=a=>a.reduce((x,y)=>x+y,0)/a.length,sg=n=>(n>0?"+":"")+Math.round(n),eg=m=>m.sa*m.sb==0?`<span class="egg tip" tabindex="0" data-tip="Huevito: 6-0. No hubo misericordia.">🥚</span>`:"",S={"Felipe Skewes":"Skewes","Tomas San Juan":"San Juan","Daniel La Roche":"La Roche","Fabián Martínez":"F. Martínez","Diego Martinez":"D. Martínez","Joaquin Villanueva":"Villanueva","Felipe Bindis":"Bindis","Cristian Pérez":"Pérez","Nicolás Terré":"Terré","Fabrizio Arnalot":"Arnalot","José Manuel Lecaros":"Lecaros","Karl Nebe":"Nebe","Angello Tapia":"Tapia"},M={"Felipe Skewes":"Felipe S.","Tomas San Juan":"Tomas S.","Daniel La Roche":"Daniel L.","Fabián Martínez":"Fabián M.","Diego Martinez":"Diego M.","Joaquin Villanueva":"Joaquin V.","Felipe Bindis":"Felipe B.","Cristian Pérez":"Cristian P.","Nicolás Terré":"Nicolás T.","Fabrizio Arnalot":"Fabrizio A.","José Manuel Lecaros":"José Manuel","Karl Nebe":"Karl N.","Angello Tapia":"Angello T."},hn=n=>S[n]||n,mn=n=>M[n]||n,tm=t=>t.map(hn).join(" / "),fd=d=>`${+d.slice(8)} de ${["Ene.","Feb.","Mar.","Abr.","May.","Jun.","Jul.","Ago.","Sep.","Oct.","Nov.","Dic."][+d.slice(5,7)-1]}`,ky=t=>[...t].sort().join("||"),dl=(m,ea,eb)=>Math.round(28*Math.min(1.35,1+Math.abs(m.sa-m.sb)*.035)*Math.abs((m.sa>m.sb?1:0)-1/(1+10**((eb-ea)/400))));function hist(){let s=new Map(P.map(p=>[p,{e:1e3}]));return G.map(m=>{let p=dl(m,av(m.a.map(n=>s.get(n).e)),av(m.b.map(n=>s.get(n).e))),w=m.sa>m.sb?m.a:m.b,c={};[...m.a,...m.b].forEach(n=>{let b=s.get(n).e,ch=w.includes(n)?p:-p;c[n]={b,ch,a:b+ch};s.get(n).e+=ch});return{...m,p,c}})}function rank(){let s=new Map(P.map(n=>[n,{n,e:1e3,pl:0,w:0,l:0,d:0}]));G.forEach(m=>{let p=dl(m,av(m.a.map(n=>s.get(n).e)),av(m.b.map(n=>s.get(n).e))),aw=m.sa>m.sb,W=aw?m.a:m.b,L=aw?m.b:m.a;[...m.a,...m.b].forEach(n=>s.get(n).pl++);W.forEach(n=>{s.get(n).w++;s.get(n).e+=p});L.forEach(n=>{s.get(n).l++;s.get(n).e-=p});m.a.forEach(n=>s.get(n).d+=m.sa-m.sb);m.b.forEach(n=>s.get(n).d+=m.sb-m.sa)});return[...s.values()].sort((a,b)=>b.e-a.e||b.w-a.w||b.d-a.d||P.indexOf(a.n)-P.indexOf(b.n))}function kings(){let h=hist(),last=[...new Set(h.map(m=>m.d))].sort().at(-1),mp=new Map(),get=t=>mp.get(ky(t))||mp.set(ky(t),{t,w:0,l:0,d:0,p:0,r:[]}).get(ky(t));h.filter(m=>m.d==last).forEach(m=>{let aw=m.sa>m.sb,A=get(m.a),B=get(m.b);Object.assign(A,{w:A.w+(aw?1:0),l:A.l+(aw?0:1),d:A.d+m.sa-m.sb,p:A.p+(aw?m.p:-m.p)});A.r.push({f:m.sa,a:m.sb,o:m.b,m});Object.assign(B,{w:B.w+(aw?0:1),l:B.l+(aw?1:0),d:B.d+m.sb-m.sa,p:B.p+(aw?-m.p:m.p)});B.r.push({f:m.sb,a:m.sa,o:m.a,m})});return[...mp.values()].sort((a,b)=>b.w-a.w||b.d-a.d||b.p-a.p)[0]}function ph(n){return hist().filter(m=>[...m.a,...m.b].includes(n)).map(m=>{let A=m.a.includes(n),pt=A?m.a:m.b,rt=A?m.b:m.a,ps=A?m.sa:m.sb,rs=A?m.sb:m.sa;return{...m,pt,rt,ps,rs,won:ps>rs,...m.c[n]}}).reverse()}function det(n){let h=ph(n),w=h.filter(m=>m.won).length,fin=1e3+h.reduce((s,m)=>s+m.ch,0),g=h.reduce((o,m)=>((o[fd(m.d)]??=[]).push(m),o),{});return`<div class="detail"><div class="hist"><strong>Historial de ${n}</strong><div class="sum"><div class="box"><small>Pts.</small><b>${Math.round(fin)}</b></div><div class="box"><small>Victorias</small><b>${w}</b></div><div class="box"><small>Derrotas</small><b>${h.length-w}</b></div><div class="box"><small>Win Rate</small><b>${h.length?((w/h.length)*100).toFixed(1):"0.0"}%</b></div></div>${Object.entries(g).map(([d,ms])=>`<div><div class="day">${d}</div>${ms.map(m=>`<div class="match ${m.won?"win":"lose"}"><span class="res ${m.won?"elo":"loss"}">${m.won?"W":"L"}</span><span class="copy">con <strong>${hn(m.pt.find(x=>x!=n)||"")}</strong> vs ${tm(m.rt)}</span><span class="sc">${m.ps}-${m.rs} ${eg(m)}</span><span class="mp ${m.ch<0?"loss":""}">${sg(m.ch)} Pts.</span></div>`).join("")}</div>`).join("")}</div></div>`}function render(){let k=kings(),r=rank();$("#kings").innerHTML=`<div><span class="label">👑 <span>Reyes de la fecha</span> 👑</span><span class="king-name">${k.t.join(" / ")}</span><span class="pill">${k.w}W · ${k.l}L · ${sg(k.d)} Games · ${sg(k.p)} Pts.</span><span class="king-list">${k.r.map(x=>`<span class="king-row"><span class="score">${x.f}-${x.a}${eg(x.m)}</span><span class="rival">vs ${tm(x.o)}</span></span>`).join("")}</span></div>`;$("#ranking").innerHTML=r.map((p,i)=>{let wr=p.pl?p.w/p.pl*100:0;return`<div class="player" data-name="${p.n}"><span class="rank ${i==0?"rank1":i==2?"rank3":""}">${i+1}</span><span><span class="p-name">${mn(p.n)}</span><span class="p-meta"><span class="bar"><span style="width:${wr}%"></span></span>${p.w} Wins · ${p.l} Lost · ${sg(p.d)} Games</span></span><span class="pts"><b>${Math.round(p.e)}</b><small>Pts.</small></span></div>`}).join("");$("#results").innerHTML=hist().slice().reverse().map(m=>`<tr><td>${fd(m.d)}</td><td>${m.a.join(" / ")}</td><td class="elo">${m.sa} - ${m.sb} ${eg(m)}</td><td>${m.b.join(" / ")}</td><td class="elo">+${m.p} / -${m.p}</td></tr>`).join("")}render();$("#ranking").onclick=e=>{let c=e.target.closest(".player");if(!c)return;let open=c.classList.contains("active");document.querySelectorAll(".player").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".detail").forEach(x=>x.remove());if(open)return;c.classList.add("active");c.insertAdjacentHTML("afterend",det(c.dataset.name))};(async()=>{if(location.hostname!="fabmarti15.github.io")return;try{let k="ranking-padel-jueves-visitas-v2",hit=!sessionStorage.getItem(k),r=await fetch(`https://countapi.mileshilliard.com/api/v1/${hit?"hit":"get"}/${k}`),d=await r.json();if(hit)sessionStorage.setItem(k,"1");$("#visits").textContent=(21+Number(d.value||0)).toLocaleString("es-CL")}catch{}})();</script></body></html>
+from pathlib import Path
+
+html = r'''<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ranking Padel Jueves</title>
+<style>
+:root{--bg:#f4f4f1;--c:#fff;--i:#171717;--m:#73706c;--l:#e4e1dc;--g:#167a45;--r:#ff2b2b;--y:#fff1a8;--b:#f4dccb;--s:0 18px 45px #1111;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;overflow-x:hidden;color:var(--i);background:radial-gradient(circle at 0 0,#167a4514,transparent 30rem),var(--bg)}
+.app{width:min(760px,100%);margin:auto;padding:10px}
+.card{background:var(--c);border:1px solid var(--l);border-radius:14px;box-shadow:var(--s);padding:clamp(16px,4vw,28px)}
+.panel{margin-top:18px;overflow:hidden}
+h1,h2,p{margin:0}
+h1{font-size:clamp(2.25rem,9vw,4.4rem);line-height:.9;letter-spacing:-.06em}
+h2{font-size:clamp(1.8rem,6vw,3rem);line-height:.95;letter-spacing:-.05em}
+.muted{color:var(--m)}
+.kings{margin-top:24px;padding:18px;border:1px solid #167a452e;border-radius:20px;background:linear-gradient(135deg,#167a450f,#fffffff5),#fafaf8;box-shadow:0 18px 45px #1111}
+.label{display:inline-flex;gap:6px;color:var(--g);font-size:.72rem;font-weight:950;letter-spacing:.1em;text-transform:uppercase}
+.king-name{display:block;margin-top:10px;font-size:clamp(1.35rem,6vw,2.2rem);line-height:.98;font-weight:950;letter-spacing:-.055em;overflow-wrap:anywhere}
+.pill{display:inline-flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding:7px 11px;border-radius:999px;background:#167a4514;color:var(--g);font-size:.86rem;font-weight:950}
+.king-list{display:grid;margin-top:18px;padding-top:10px;border-top:1px solid var(--l);color:var(--m);font-size:.92rem;font-weight:850}
+.king-row{display:grid;grid-template-columns:48px 1fr;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #e4e1dcbf}
+.king-row:last-child{border:0}
+.score{color:var(--i);font-weight:950}
+.rival{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.egg{display:inline-flex;margin-left:4px;font-size:1rem;cursor:help;animation:e 1.35s ease-in-out infinite;transform-origin:bottom}
+.tip{position:relative}
+.tip:after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 10px);width:min(260px,80vw);padding:10px 12px;border-radius:10px;background:#171717;color:white;font-size:.78rem;line-height:1.25;font-weight:800;white-space:normal;transform:translateX(-50%) translateY(4px);opacity:0;pointer-events:none;transition:.16s;z-index:3}
+.tip:hover:after,.tip:focus:after{opacity:1;transform:translateX(-50%)}
+@keyframes e{45%{transform:translateY(-5px) rotate(5deg)}0%,100%{transform:translateY(0) rotate(-5deg)}}
+.stats{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:18px;color:var(--m);font-size:.82rem;font-weight:750}
+.stats strong{color:var(--i);font-weight:900}
+.list{margin-top:16px}
+.player{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--l);cursor:pointer}
+.player:last-child{border:0}
+.player.active{background:#167a450d;margin:0 -10px;padding:14px 10px;border-radius:12px}
+.rank{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:#ededed;font-weight:900}
+.rank1{background:var(--y)}
+.rank3{background:var(--b)}
+.p-name{display:block;font-size:1rem;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-meta{display:flex;align-items:center;gap:8px;margin-top:6px;color:var(--m);font-size:.75rem;font-weight:850;white-space:nowrap;line-height:1.1}
+.bar{width:72px;height:6px;border-radius:999px;background:var(--r);overflow:hidden;flex:0 0 72px}
+.bar span{display:block;height:100%;border-radius:999px;background:var(--g)}
+.pts{text-align:right}
+.pts b{display:block;font-size:1.25rem;color:var(--g);line-height:1}
+.pts small{color:var(--m);font-size:.68rem;font-weight:900;text-transform:uppercase}
+.elo{color:var(--g);font-weight:900}
+.loss{color:#d71919!important}
+.detail{display:block;width:100%;white-space:normal}
+.hist{display:grid;gap:12px;padding:14px 0 16px}
+.sum{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.box{min-height:64px;display:grid;align-content:center;gap:6px;padding:10px;border:1px solid var(--l);border-radius:14px;background:white}
+.box small{color:var(--m);font-size:.64rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.box b{font-size:1.18rem;line-height:1;font-weight:950}
+.day{margin-top:4px;color:var(--m);font-size:.84rem;font-weight:950}
+.match{display:grid;grid-template-columns:26px 1fr auto;grid-template-areas:"res copy copy" ". sc mp";gap:6px 8px;align-items:center;padding:10px;border:1px solid var(--l);border-radius:12px;background:white}
+.win{border-color:#167a4521;background:#167a4512}
+.lose{border-color:#ff2b2b47;background:#ff2b2b1a}
+.res{grid-area:res}
+.copy{grid-area:copy;min-width:0;color:var(--m);font-size:.78rem;line-height:1.25}
+.copy strong{color:var(--i)}
+.sc{grid-area:sc;text-align:left;font-size:.8rem;font-weight:950}
+.mp{grid-area:mp;display:inline-flex;justify-content:center;align-items:center;min-height:28px;padding:0 8px;border-radius:8px;border:1px solid #167a4538;background:#f3faf6;color:var(--g);font-size:.78rem;font-weight:950;justify-self:end}
+.mp.loss{border-color:#ff2b2b57;background:#ff2b2b1f}
+.wrap{margin-top:16px;overflow-x:auto}
+table{width:100%;min-width:620px;border-collapse:collapse}
+th,td{padding:10px 8px;text-align:left;border-bottom:1px solid var(--l);white-space:nowrap;font-size:.78rem}
+th{color:var(--m);font-size:.62rem;letter-spacing:.07em;text-transform:uppercase}
+.exp{display:grid;gap:12px;margin-top:18px}
+.exp div{border:1px solid var(--l);border-radius:8px;padding:16px;background:#fafaf8}
+.exp strong{display:block;margin-bottom:8px}
+.exp p{color:var(--m);font-weight:650;line-height:1.35}
+@media(max-width:420px){.app{padding:8px}.card{padding:14px}.player{grid-template-columns:36px 1fr 56px;gap:8px;padding:12px 0}.player.active{margin:0 -8px;padding:12px 8px}.rank{width:32px;height:32px;font-size:.92rem}.p-name{font-size:.94rem}.p-meta{font-size:.66rem;gap:6px;margin-top:4px}.bar{width:50px;height:5px;flex-basis:50px}.pts b{font-size:1.08rem}.pts small{font-size:.6rem}}
+@media(max-width:360px){.player{grid-template-columns:32px 1fr 50px;gap:6px;padding:10px 0}.rank{width:28px;height:28px;font-size:.84rem}.p-name{font-size:.86rem}.p-meta{font-size:.58rem;gap:5px;margin-top:3px}.bar{width:38px;height:4px;flex-basis:38px}.pts b{font-size:.98rem}.pts small{font-size:.54rem}}
+</style>
+</head>
+<body>
+<main class="app">
+  <section class="card">
+    <h1>Americanos de los jueves</h1>
+    <div class="kings" id="kings"></div>
+    <div class="stats"><span>Histórico de visitas: <strong id="visits">21</strong></span><span>Viendo ahora mismo: <strong>1</strong></span></div>
+  </section>
+
+  <section class="card panel">
+    <h2>Ranking oficial</h2>
+    <div class="list" id="ranking"></div>
+  </section>
+
+  <section class="card panel">
+    <h2>Historial</h2>
+    <p class="muted">Resultados cargados por fecha y puntos ELO en juego.</p>
+    <div class="wrap">
+      <table>
+        <thead><tr><th>Fecha</th><th>Pareja A</th><th>Resultado</th><th>Pareja B</th><th>Puntos</th></tr></thead>
+        <tbody id="results"></tbody>
+      </table>
+    </div>
+    <div class="exp">
+      <div><strong>Que significa puntos</strong><p>Es lo que gana cada jugador de la pareja vencedora y pierde cada jugador de la pareja derrotada.</p></div>
+      <div><strong>Como se calcula</strong><p>Parte en 28 puntos. Si ganas por más games sube un poco. Si le ganas a una pareja con mejor ELO, también vale más.</p></div>
+      <div><strong>Como mejorar</strong><p>Ganar partidos suma ELO. Ganarle a parejas fuertes y cerrar sets con buena diferencia acelera la subida.</p></div>
+    </div>
+  </section>
+
+  <section class="card panel">
+    <h2>Como funciona el ELO</h2>
+    <p class="muted">Todos parten con 1000 puntos. Cada partido mueve puntos: la pareja que gana suma y la pareja que pierde resta.</p>
+    <div class="exp">
+      <div><strong>Ganar sube</strong><p>Si ganas, cada jugador de tu pareja suma los puntos del partido. Si pierdes, cada jugador pierde esos mismos puntos.</p></div>
+      <div><strong>El rival importa</strong><p>Ganarle a una pareja con mejor ranking vale un poco más. Ganarle a una pareja con menos ranking vale un poco menos.</p></div>
+      <div><strong>El resultado importa</strong><p>Si ganas 6-0 suma más que ganar 7-6, porque la diferencia de games también cuenta.</p></div>
+    </div>
+  </section>
+</main>
+
+<script>
+/* =========================================================
+   JUGADORES
+   Para agregar uno nuevo, súmalo al final.
+   ========================================================= */
+const P=[
+  "Felipe Skewes",
+  "Parner Skewes",
+  "Tomas San Juan",
+  "Daniel La Roche",
+  "Fabián Martínez",
+  "Diego Martinez",
+  "Joaquin Villanueva",
+  "Felipe Bindis",
+  "Cristian Pérez",
+  "Nicolás Terré",
+  "Fabrizio Arnalot",
+  "José Manuel Lecaros",
+  "Karl Nebe",
+  "Angello Tapia"
+];
+
+/* =========================================================
+   RESULTADOS
+   La próxima vez pega los nuevos partidos al final de esta lista.
+   Formato:
+   ["AAAA-MM-DD",["Jugador 1","Jugador 2"],["Jugador 3","Jugador 4"],gamesA,gamesB]
+   ========================================================= */
+const G=[
+  // 2026-04-30
+  ["2026-04-30",["Cristian Pérez","Joaquin Villanueva"],["Felipe Skewes","Fabián Martínez"],6,4],
+  ["2026-04-30",["Felipe Skewes","Fabián Martínez"],["Daniel La Roche","Felipe Bindis"],6,3],
+  ["2026-04-30",["Felipe Skewes","Fabián Martínez"],["Tomas San Juan","Diego Martinez"],6,3],
+  ["2026-04-30",["Cristian Pérez","Joaquin Villanueva"],["Daniel La Roche","Felipe Bindis"],6,3],
+  ["2026-04-30",["Cristian Pérez","Joaquin Villanueva"],["Tomas San Juan","Diego Martinez"],6,4],
+  ["2026-04-30",["Daniel La Roche","Felipe Bindis"],["Tomas San Juan","Diego Martinez"],3,6],
+
+  // 2026-05-07
+  ["2026-05-07",["José Manuel Lecaros","Joaquin Villanueva"],["Fabián Martínez","Nicolás Terré"],7,6],
+  ["2026-05-07",["Fabián Martínez","Nicolás Terré"],["Karl Nebe","Diego Martinez"],6,0],
+  ["2026-05-07",["José Manuel Lecaros","Joaquin Villanueva"],["Cristian Pérez","Tomas San Juan"],6,3],
+  ["2026-05-07",["Cristian Pérez","Tomas San Juan"],["Karl Nebe","Diego Martinez"],6,0],
+  ["2026-05-07",["Felipe Skewes","Fabrizio Arnalot"],["Nicolás Terré","Fabián Martínez"],4,6],
+  ["2026-05-07",["Felipe Skewes","Fabrizio Arnalot"],["Felipe Bindis","Angello Tapia"],7,6],
+  ["2026-05-07",["Felipe Skewes","Fabrizio Arnalot"],["Tomas San Juan","Cristian Pérez"],7,6],
+  ["2026-05-07",["José Manuel Lecaros","Joaquin Villanueva"],["Felipe Bindis","Angello Tapia"],6,2],
+  ["2026-05-07",["Karl Nebe","Diego Martinez"],["Felipe Bindis","Angello Tapia"],6,0],
+
+  // 2026-05-14
+  ["2026-05-14",["Felipe Skewes","Parner Skewes"],["Fabrizio Arnalot","Cristian Pérez"],6,4],
+  ["2026-05-14",["Joaquin Villanueva","Tomas San Juan"],["Felipe Skewes","Parner Skewes"],7,6],
+  ["2026-05-14",["Nicolás Terré","Diego Martinez"],["Felipe Skewes","Parner Skewes"],6,4],
+  ["2026-05-14",["Nicolás Terré","Diego Martinez"],["Joaquin Villanueva","Tomas San Juan"],7,6],
+  ["2026-05-14",["Nicolás Terré","Diego Martinez"],["Fabrizio Arnalot","Cristian Pérez"],6,3],
+  ["2026-05-14",["Joaquin Villanueva","Tomas San Juan"],["Fabrizio Arnalot","Cristian Pérez"],6,4]
+].map(([d,a,b,sa,sb])=>({d,a,b,sa,sb}));
+
+const $=s=>document.querySelector(s),
+av=a=>a.reduce((x,y)=>x+y,0)/a.length,
+sg=n=>(n>0?"+":"")+Math.round(n),
+eg=m=>m.sa*m.sb==0?`<span class="egg tip" tabindex="0" data-tip="Huevito: 6-0. No hubo misericordia.">🥚</span>`:"";
+
+const S={
+  "Felipe Skewes":"Skewes",
+  "Parner Skewes":"Parner",
+  "Tomas San Juan":"San Juan",
+  "Daniel La Roche":"La Roche",
+  "Fabián Martínez":"F. Martínez",
+  "Diego Martinez":"D. Martínez",
+  "Joaquin Villanueva":"Villanueva",
+  "Felipe Bindis":"Bindis",
+  "Cristian Pérez":"Pérez",
+  "Nicolás Terré":"Terré",
+  "Fabrizio Arnalot":"Arnalot",
+  "José Manuel Lecaros":"Lecaros",
+  "Karl Nebe":"Nebe",
+  "Angello Tapia":"Tapia"
+};
+
+const M={
+  "Felipe Skewes":"Felipe S.",
+  "Parner Skewes":"Parner S.",
+  "Tomas San Juan":"Tomas S.",
+  "Daniel La Roche":"Daniel L.",
+  "Fabián Martínez":"Fabián M.",
+  "Diego Martinez":"Diego M.",
+  "Joaquin Villanueva":"Joaquin V.",
+  "Felipe Bindis":"Felipe B.",
+  "Cristian Pérez":"Cristian P.",
+  "Nicolás Terré":"Nicolás T.",
+  "Fabrizio Arnalot":"Fabrizio A.",
+  "José Manuel Lecaros":"José Manuel",
+  "Karl Nebe":"Karl N.",
+  "Angello Tapia":"Angello T."
+};
+
+const hn=n=>S[n]||n,
+mn=n=>M[n]||n,
+tm=t=>t.map(hn).join(" / "),
+fd=d=>`${+d.slice(8)} de ${["Ene.","Feb.","Mar.","Abr.","May.","Jun.","Jul.","Ago.","Sep.","Oct.","Nov.","Dic."][+d.slice(5,7)-1]}`,
+ky=t=>[...t].sort().join("||"),
+dl=(m,ea,eb)=>Math.round(28*Math.min(1.35,1+Math.abs(m.sa-m.sb)*.035)*Math.abs((m.sa>m.sb?1:0)-1/(1+10**((eb-ea)/400))));
+
+function hist(){
+  let s=new Map(P.map(p=>[p,{e:1000}]));
+  return G.map(m=>{
+    let p=dl(m,av(m.a.map(n=>s.get(n).e)),av(m.b.map(n=>s.get(n).e))),
+        w=m.sa>m.sb?m.a:m.b,
+        c={};
+
+    [...m.a,...m.b].forEach(n=>{
+      let b=s.get(n).e,
+          ch=w.includes(n)?p:-p;
+      c[n]={b,ch,a:b+ch};
+      s.get(n).e+=ch;
+    });
+
+    return{...m,p,c};
+  });
+}
+
+function rank(){
+  let s=new Map(P.map(n=>[n,{n,e:1000,pl:0,w:0,l:0,d:0}]));
+
+  G.forEach(m=>{
+    let p=dl(m,av(m.a.map(n=>s.get(n).e)),av(m.b.map(n=>s.get(n).e))),
+        aw=m.sa>m.sb,
+        W=aw?m.a:m.b,
+        L=aw?m.b:m.a;
+
+    [...m.a,...m.b].forEach(n=>s.get(n).pl++);
+
+    W.forEach(n=>{
+      s.get(n).w++;
+      s.get(n).e+=p;
+    });
+
+    L.forEach(n=>{
+      s.get(n).l++;
+      s.get(n).e-=p;
+    });
+
+    m.a.forEach(n=>s.get(n).d+=m.sa-m.sb);
+    m.b.forEach(n=>s.get(n).d+=m.sb-m.sa);
+  });
+
+  return[...s.values()].sort((a,b)=>b.e-a.e||b.w-a.w||b.d-a.d||P.indexOf(a.n)-P.indexOf(b.n));
+}
+
+function kings(){
+  let h=hist(),
+      last=[...new Set(h.map(m=>m.d))].sort().at(-1),
+      mp=new Map(),
+      get=t=>mp.get(ky(t))||mp.set(ky(t),{t,w:0,l:0,d:0,p:0,r:[]}).get(ky(t));
+
+  h.filter(m=>m.d==last).forEach(m=>{
+    let aw=m.sa>m.sb,
+        A=get(m.a),
+        B=get(m.b);
+
+    Object.assign(A,{
+      w:A.w+(aw?1:0),
+      l:A.l+(aw?0:1),
+      d:A.d+m.sa-m.sb,
+      p:A.p+(aw?m.p:-m.p)
+    });
+    A.r.push({f:m.sa,a:m.sb,o:m.b,m});
+
+    Object.assign(B,{
+      w:B.w+(aw?0:1),
+      l:B.l+(aw?1:0),
+      d:B.d+m.sb-m.sa,
+      p:B.p+(aw?-m.p:m.p)
+    });
+    B.r.push({f:m.sb,a:m.sa,o:m.a,m});
+  });
+
+  return[...mp.values()].sort((a,b)=>b.w-a.w||b.d-a.d||b.p-a.p)[0];
+}
+
+function ph(n){
+  return hist()
+    .filter(m=>[...m.a,...m.b].includes(n))
+    .map(m=>{
+      let A=m.a.includes(n),
+          pt=A?m.a:m.b,
+          rt=A?m.b:m.a,
+          ps=A?m.sa:m.sb,
+          rs=A?m.sb:m.sa;
+
+      return{...m,pt,rt,ps,rs,won:ps>rs,...m.c[n]};
+    })
+    .reverse();
+}
+
+function det(n){
+  let h=ph(n),
+      w=h.filter(m=>m.won).length,
+      fin=1000+h.reduce((s,m)=>s+m.ch,0),
+      g=h.reduce((o,m)=>((o[fd(m.d)]??=[]).push(m),o),{});
+
+  return`<div class="detail"><div class="hist"><strong>Historial de ${n}</strong><div class="sum"><div class="box"><small>Pts.</small><b>${Math.round(fin)}</b></div><div class="box"><small>Victorias</small><b>${w}</b></div><div class="box"><small>Derrotas</small><b>${h.length-w}</b></div><div class="box"><small>Win Rate</small><b>${h.length?((w/h.length)*100).toFixed(1):"0.0"}%</b></div></div>${Object.entries(g).map(([d,ms])=>`<div><div class="day">${d}</div>${ms.map(m=>`<div class="match ${m.won?"win":"lose"}"><span class="res ${m.won?"elo":"loss"}">${m.won?"W":"L"}</span><span class="copy">con <strong>${hn(m.pt.find(x=>x!=n)||"")}</strong> vs ${tm(m.rt)}</span><span class="sc">${m.ps}-${m.rs} ${eg(m)}</span><span class="mp ${m.ch<0?"loss":""}">${sg(m.ch)} Pts.</span></div>`).join("")}</div>`).join("")}</div></div>`;
+}
+
+function render(){
+  let k=kings(),
+      r=rank();
+
+  $("#kings").innerHTML=`<div><span class="label">👑 <span>Reyes de la fecha</span> 👑</span><span class="king-name">${k.t.join(" / ")}</span><span class="pill">${k.w}W · ${k.l}L · ${sg(k.d)} Games · ${sg(k.p)} Pts.</span><span class="king-list">${k.r.map(x=>`<span class="king-row"><span class="score">${x.f}-${x.a}${eg(x.m)}</span><span class="rival">vs ${tm(x.o)}</span></span>`).join("")}</span></div>`;
+
+  $("#ranking").innerHTML=r.map((p,i)=>{
+    let wr=p.pl?p.w/p.pl*100:0;
+    return`<div class="player" data-name="${p.n}"><span class="rank ${i==0?"rank1":i==2?"rank3":""}">${i+1}</span><span><span class="p-name">${mn(p.n)}</span><span class="p-meta"><span class="bar"><span style="width:${wr}%"></span></span>${p.w} Wins · ${p.l} Lost · ${sg(p.d)} Games</span></span><span class="pts"><b>${Math.round(p.e)}</b><small>Pts.</small></span></div>`;
+  }).join("");
+
+  $("#results").innerHTML=hist().slice().reverse().map(m=>`<tr><td>${fd(m.d)}</td><td>${m.a.join(" / ")}</td><td class="elo">${m.sa} - ${m.sb} ${eg(m)}</td><td>${m.b.join(" / ")}</td><td class="elo">+${m.p} / -${m.p}</td></tr>`).join("");
+}
+
+render();
+
+$("#ranking").onclick=e=>{
+  let c=e.target.closest(".player");
+  if(!c)return;
+
+  let open=c.classList.contains("active");
+
+  document.querySelectorAll(".player").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".detail").forEach(x=>x.remove());
+
+  if(open)return;
+
+  c.classList.add("active");
+  c.insertAdjacentHTML("afterend",det(c.dataset.name));
+};
+
+(async()=>{
+  if(location.hostname!="fabmarti15.github.io")return;
+  try{
+    let k="ranking-padel-jueves-visitas-v2",
+        hit=!sessionStorage.getItem(k),
+        r=await fetch(`https://countapi.mileshilliard.com/api/v1/${hit?"hit":"get"}/${k}`),
+        d=await r.json();
+
+    if(hit)sessionStorage.setItem(k,"1");
+
+    $("#visits").textContent=(21+Number(d.value||0)).toLocaleString("es-CL");
+  }catch{}
+})();
+</script>
+</body>
+</html>
+'''
+
+path = Path("/mnt/data/index_padel_jueves_actualizado.html")
+path.write_text(html, encoding="utf-8")
+print(f"Archivo creado: {path}")
+print(f"Tamaño: {path.stat().st_size:,} bytes")
