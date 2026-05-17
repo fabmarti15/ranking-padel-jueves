@@ -1,29 +1,687 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin · Padel Jueves</title><style>:root{--bg:#f4f4f1;--c:#fff;--i:#171717;--m:#73706c;--l:#e4e1dc;--g:#167a45;--r:#ff2b2b;--s:0 18px 45px #1111;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}body{margin:0;color:var(--i);background:radial-gradient(circle at 0 0,#167a4514,transparent 30rem),var(--bg)}.app{width:min(760px,100%);margin:auto;padding:10px}.card{background:var(--c);border:1px solid var(--l);border-radius:14px;box-shadow:var(--s);padding:clamp(16px,4vw,28px)}.panel{margin-top:18px}h2,p{margin:0}h2{font-size:clamp(1.4rem,5vw,2rem);font-weight:950;letter-spacing:-.04em;line-height:1}.muted{color:var(--m);font-size:.85rem;margin-top:8px;line-height:1.4}label{display:block;font-size:.68rem;font-weight:950;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:5px;margin-top:14px}input[type=date],textarea{width:100%;padding:10px 12px;border:1.5px solid var(--l);border-radius:10px;font-size:.88rem;font-family:inherit;color:var(--i);background:white;-webkit-appearance:none;appearance:none;outline:none}input[type=date]:focus,textarea:focus{border-color:var(--g)}textarea{resize:vertical}.btn{display:inline-flex;align-items:center;justify-content:center;padding:11px 18px;border-radius:10px;border:none;font-family:inherit;font-size:.88rem;font-weight:950;cursor:pointer;transition:.14s}.btn-primary{background:var(--g);color:#fff;width:100%;margin-top:14px}.btn-primary:hover{opacity:.87}.btn-sm{padding:7px 13px;font-size:.78rem;font-weight:950}.btn-outline{background:#f0f0ee;color:var(--i);border:1px solid var(--l)}.btn-red{background:#fff0f0;color:var(--r);border:1px solid #ff2b2b38}.btn-copy{background:#167a4514;color:var(--g);border:1px solid #167a4530}.header-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}a.back{color:var(--g);font-size:.82rem;font-weight:900;text-decoration:none}.count-tag{font-size:.78rem;font-weight:850;color:var(--m)}.action-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}.copied{color:var(--g);font-size:.8rem;font-weight:950;display:none}.code-box{width:100%;margin-top:12px;padding:12px;border:1.5px solid var(--l);border-radius:10px;font-family:monospace;font-size:.68rem;line-height:1.5;color:var(--m);background:#fafaf8;resize:vertical;min-height:100px;outline:none}.mrow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;padding:12px 0;border-bottom:1px solid var(--l)}.mrow:last-child{border:0}.minner{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.vt{font-size:.7rem;font-weight:950;color:var(--m)}.sb{padding:3px 10px;border-radius:8px;background:#f5f5f3;font-size:.9rem;font-weight:950;border:1px solid var(--l)}.ps{padding:5px 8px;border-radius:8px;font-family:inherit;font-size:.75rem;font-weight:850;border:1.5px solid;cursor:pointer;max-width:155px;outline:none}.ps.ok{border-color:#167a4530;background:#167a4508;color:var(--g)}.ps.bad{border-color:var(--r);background:#fff5f5;color:var(--r)}.xb{width:30px;height:30px;border-radius:50%;border:none;background:#f5f5f3;cursor:pointer;font-size:.85rem;display:grid;place-items:center;color:var(--m)}.xb:hover{background:#ffe4e4;color:var(--r)}.si{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--l)}.si:last-child{border:0}.si-t{font-size:.82rem;font-weight:950}.si-d{font-size:.67rem;color:var(--m);font-weight:850;margin-top:2px}.empty{text-align:center;color:var(--m);padding:18px 0;font-size:.84rem}</style></head><body><main class="app"><section class="card"><div class="header-row"><h2>Admin · Padel Jueves</h2><a href="../" class="back">← Ver ranking</a></div><p class="muted">Pega el WhatsApp con los resultados — se interpretan solos. Los rojos hay que corregirlos a mano.</p><label>Fecha</label><input type="date" id="dt"><label>WhatsApp</label><textarea id="wa" rows="9" placeholder="[14-05-26, 7:30 PM] Pipe: Skewes partner contra Fabri y Cris: 6-4&#10;Skewes partner contra Juaco y Tomy: 6-7&#10;[14-05-26, 7:32 PM] Yeyo: Diego-Terre 7-6 Joaquin-Tomy&#10;..."></textarea><button class="btn btn-primary" onclick="go()">→ Interpretar</button></section><section class="card panel" id="rsec" style="display:none"><div class="header-row"><h2>Revisar</h2><span id="mc" class="count-tag"></span></div><div id="ml" style="margin-top:8px"></div><div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-primary" onclick="save()" style="width:auto;padding:11px 22px">Guardar</button><button class="btn btn-sm btn-outline" onclick="clr()">Limpiar</button></div></section><section class="card panel"><div class="header-row"><h2>Guardados</h2><span id="sc" class="count-tag"></span></div><div id="sl" style="margin-top:8px"></div></section><section class="card panel"><h2>Exportar</h2><p class="muted">Copia el código y reemplaza <code>GB=[...]</code> en index.html.</p><div class="action-row"><button class="btn btn-sm btn-outline" onclick="gen()">Generar</button><button class="btn btn-sm btn-copy" onclick="cp()">Copiar</button><button class="btn btn-sm btn-red" onclick="clrS()">Limpiar guardados</button><span class="copied" id="cpd">¡Copiado!</span></div><textarea class="code-box" id="code" readonly placeholder="Haz clic en Generar..."></textarea></section></main><script>const P=["Felipe Skewes","Tomas San Juan","Daniel La Roche","Fabián Martínez","Diego Martinez","Joaquin Villanueva","Felipe Bindis","Cristian Pérez","Nicolás Terré","Fabrizio Arnalot","José Manuel Lecaros","Karl Nebe","Angello Tapia"],GB=[["2026-04-30",["Cristian Pérez","Joaquin Villanueva"],["Felipe Skewes","Fabián Martínez"],6,4],["2026-04-30",["Felipe Skewes","Fabián Martínez"],["Daniel La Roche","Felipe Bindis"],6,3],["2026-04-30",["Felipe Skewes","Fabián Martínez"],["Tomas San Juan","Diego Martinez"],6,3],["2026-04-30",["Cristian Pérez","Joaquin Villanueva"],["Daniel La Roche","Felipe Bindis"],6,3],["2026-04-30",["Cristian Pérez","Joaquin Villanueva"],["Tomas San Juan","Diego Martinez"],6,4],["2026-04-30",["Daniel La Roche","Felipe Bindis"],["Tomas San Juan","Diego Martinez"],3,6],["2026-05-07",["José Manuel Lecaros","Joaquin Villanueva"],["Fabián Martínez","Nicolás Terré"],7,6],["2026-05-07",["Fabián Martínez","Nicolás Terré"],["Karl Nebe","Diego Martinez"],6,0],["2026-05-07",["José Manuel Lecaros","Joaquin Villanueva"],["Cristian Pérez","Tomas San Juan"],6,3],["2026-05-07",["Cristian Pérez","Tomas San Juan"],["Karl Nebe","Diego Martinez"],6,0],["2026-05-07",["Felipe Skewes","Fabrizio Arnalot"],["Nicolás Terré","Fabián Martínez"],4,6],["2026-05-07",["Felipe Skewes","Fabrizio Arnalot"],["Felipe Bindis","Angello Tapia"],7,6],["2026-05-07",["Felipe Skewes","Fabrizio Arnalot"],["Tomas San Juan","Cristian Pérez"],7,6],["2026-05-07",["José Manuel Lecaros","Joaquin Villanueva"],["Felipe Bindis","Angello Tapia"],6,2],["2026-05-07",["Karl Nebe","Diego Martinez"],["Felipe Bindis","Angello Tapia"],6,0]],KEY='padel-extra-games';function ld(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch{return[];}}function sv(a){localStorage.setItem(KEY,JSON.stringify(a));}const AL={skewes:'Felipe Skewes',pipe:'Felipe Skewes',tomas:'Tomas San Juan',tomy:'Tomas San Juan',tom:'Tomas San Juan',sanjuan:'Tomas San Juan',daniel:'Daniel La Roche',laroche:'Daniel La Roche',roche:'Daniel La Roche',fabian:'Fabián Martínez',fabián:'Fabián Martínez',presidente:'Fabián Martínez',diego:'Diego Martinez',joaco:'Joaquin Villanueva',juaco:'Joaquin Villanueva',joaquin:'Joaquin Villanueva',joaquín:'Joaquin Villanueva',villanueva:'Joaquin Villanueva',bindis:'Felipe Bindis',cristian:'Cristian Pérez',cris:'Cristian Pérez',perez:'Cristian Pérez',pérez:'Cristian Pérez',nicolas:'Nicolás Terré',nicolás:'Nicolás Terré',terre:'Nicolás Terré',terré:'Nicolás Terré',terresteguin:'Nicolás Terré',yeyo:'Nicolás Terré',fabrizio:'Fabrizio Arnalot',fabri:'Fabrizio Arnalot',arnalot:'Fabrizio Arnalot',jose:'José Manuel Lecaros',josé:'José Manuel Lecaros',lecaros:'José Manuel Lecaros',karl:'Karl Nebe',nebe:'Karl Nebe',angello:'Angello Tapia',tapia:'Angello Tapia'};function nm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');}function rp(raw){if(!raw||!raw.trim())return{n:null,r:''};raw=raw.trim();const ws=raw.toLowerCase().split(/\s+/);for(const w of ws){const k=nm(w);if(AL[k])return{n:AL[k],r:raw};if(AL[w])return{n:AL[w],r:raw};}for(let i=0;i<ws.length-1;i++){const k=nm(ws[i]+ws[i+1]);if(AL[k])return{n:AL[k],r:raw};}return{n:null,r:raw};}function pp(s){const E={n:null,r:''};if(!s||!s.trim())return[E,E];s=s.replace(/[:.,!?]/g,' ').trim();if(/\sy\s/i.test(s)){const[a,b]=s.split(/\sy\s/i);return[rp(a.trim()),rp((b||'').trim())];}if(/\s-\s/.test(s)){const i=s.indexOf(' - ');return[rp(s.slice(0,i)),rp(s.slice(i+3))];}const flat=s.replace(/-/g,' '),ws=flat.split(/\s+/).filter(Boolean);for(let i=1;i<ws.length;i++){const l=rp(ws.slice(0,i).join(' ')),r=rp(ws.slice(i).join(' '));if(l.n&&r.n&&l.n!==r.n)return[l,r];}for(let i=1;i<ws.length;i++){const l=rp(ws.slice(0,i).join(' '));if(l.n){const r=rp(ws.slice(i).join(' '));if(!r.n||r.n!==l.n)return[l,r];}}return[rp(s),E];}function pl(line,date){if(!line||line.length<5)return null;const sm=line.match(/\b([0-7])-([0-7])\b/g);if(!sm)return null;const score=sm[sm.length-1],si=line.lastIndexOf(score),sa=+score[0],sb=+score[2];let aS,bS;if(/\bcontra\b|\bvs\.?\b/i.test(line)){const pts=line.split(/\bcontra\b|\bvs\.?\b/i);aS=(pts[0]||'').replace(/\b[0-7]-[0-7]\b/g,'').trim();bS=(pts[1]||'').replace(/\b[0-7]-[0-7]\b/g,'').replace(/[:]/g,' ').trim();}else{aS=line.slice(0,si).trim();bS=line.slice(si+score.length).trim();}if(!aS&&!bS)return null;const[a1,a2]=pp(aS),[b1,b2]=pp(bS);if(!a1.n&&!a2.n&&!b1.n&&!b2.n)return null;return{date,a1,a2,b1,b2,sa,sb};}let PM=[];function go(){const text=document.getElementById('wa').value,dv=document.getElementById('dt').value;if(!text.trim())return;PM=[];let cd=dv;for(const raw of text.split('\n')){const hm=raw.match(/\[(\d{1,2})-(\d{2})-(\d{2}),/);if(hm){const d=20
-h
-m
-[
-3
-]
-−
-hm[3]−{hm[2]}-${hm[1]};if(/^\d{4}-\d{2}-\d{2}$/.test(d))cd=d;}const content=raw.replace(/^\[[\d\-:,\s]+[AP]M\]\s*[^:]+:\s*/,'').trim();if(!content)continue;const m=pl(content,cd||dv);if(m)PM.push(m);}renderR();}function psel(i,pos,p){const ok=!!p.n,opts=P.map(n=><option value="
-n
-"
-n"{n===p.n?'selected':''}>${n}</option>).join('');return<select class="ps ${ok?'ok':'bad'}" data-i="${i}" data-p="${pos}" onchange="upd(this)"><option value="">${ok?'':p.r?'? '+p.r:'—'}</option>${opts}</select>;}function renderR(){const sec=document.getElementById('rsec');if(!PM.length){sec.style.display='none';return;}sec.style.display='';document.getElementById('mc').textContent=PM.length+' partido'+(PM.length!==1?'s':'');document.getElementById('ml').innerHTML=PM.map((m,i)=><div class="mrow" id="mr${i}"><div><div class="minner">${psel(i,'a1',m.a1)}<span class="vt">+</span>${psel(i,'a2',m.a2)}<span class="sb">
-m
-.
-s
-a
-–
-m.sa–{m.sb}</span>${psel(i,'b1',m.b1)}<span class="vt">+</span>${psel(i,'b2',m.b2)}</div><div style="font-size:.67rem;color:var(--m);margin-top:4px">${fd(m.date)}</div></div><button class="xb" onclick="dm(${i})">✕</button></div>).join('');}function upd(s){const i=+s.dataset.i,p=s.dataset.p;PM[i][p].n=s.value||null;s.className='ps '+(s.value?'ok':'bad');}function dm(i){PM.splice(i,1);renderR();}function clr(){PM=[];document.getElementById('rsec').style.display='none';}function save(){const ok=PM.filter(m=>m.a1.n&&m.a2.n&&m.b1.n&&m.b2.n),bad=PM.length-ok.length;if(!ok.length){alert('Ningún partido tiene los 4 jugadores completos.');return;}if(bad&&!confirm(
-b
-a
-d
-p
-a
-r
-t
-i
-d
-o
-badpartido{bad>1?'s':''} incompleto{bad>1?'s':''}. ¿Guardar solo los ${ok.length} completo {ok.length>1?'s':''}?))return;const ex=ld();for(const m of ok)ex.push([m.date,[m.a1.n,m.a2.n],[m.b1.n,m.b2.n],m.sa,m.sb]);sv(ex);PM=[];document.getElementById('rsec').style.display='none';renderS();}const fd=d=>${+d.slice(8)} de ${['Ene.','Feb.','Mar.','Abr.','May.','Jun.','Jul.','Ago.','Sep.','Oct.','Nov.','Dic.'][+d.slice(5,7)-1]},sn=n=>{const p=n.split(' ');return p.length>2?p[0]+' '+p[p.length-1]:n;};function renderS(){const ex=ld();document.getElementById('sc').textContent=ex.length?ex.length+' partido'+(ex.length!==1?'s':''):'';const el=document.getElementById('sl');if(!ex.length){el.innerHTML='<div class="empty">Nada guardado.</div>';return;}el.innerHTML=ex.map(([d,a,b,sa,sb],i)=><div class="si"><div><div class="si-t">{a.map(sn).join(' + ')} ${sa}– {sb} ${b.map(sn).join(' + ')}</div><div class="si-d">${fd(d)}</div></div><button class="xb" onclick="ds(${i})">✕</button></div>).join('');}function ds(i){if(!confirm('¿Eliminar?'))return;const ex=ld();ex.splice(i,1);sv(ex);renderS();}function clrS(){if(!ld().length)return alert('No hay nada guardado.');if(!confirm('¿Limpiar todo? Asegúrate de haber actualizado index.html.'))return;sv([]);renderS();document.getElementById('code').value='';}function gen(){document.getElementById('code').value='GB='+JSON.stringify([...GB,...ld()]);}function cp(){gen();const v=document.getElementById('code').value;if(!v)return;navigator.clipboard.writeText(v).then(()=>{const e=document.getElementById('cpd');e.style.display='inline';setTimeout(()=>e.style.display='none',2500);}).catch(()=>{document.getElementById('code').select();document.execCommand('copy');});}function nextThu(){const d=new Date(),diff=(4-d.getDay()+7)%7||7;d.setDate(d.getDate()+diff);return d.toISOString().slice(0,10);}document.getElementById('dt').value=nextThu();renderS();</script></body></html>
+from pathlib import Path
 
+html = r'''<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin · Padel Jueves</title>
+  <style>
+    :root{
+      --bg:#f4f4f1;
+      --c:#fff;
+      --i:#171717;
+      --m:#73706c;
+      --l:#e4e1dc;
+      --g:#167a45;
+      --r:#ff2b2b;
+      --s:0 18px 45px #1111;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--i);
+      background:radial-gradient(circle at 0 0,#167a4514,transparent 30rem),var(--bg);
+    }
+    .app{width:min(760px,100%);margin:auto;padding:10px}
+    .card{
+      background:var(--c);
+      border:1px solid var(--l);
+      border-radius:14px;
+      box-shadow:var(--s);
+      padding:clamp(16px,4vw,28px);
+    }
+    .panel{margin-top:18px}
+    h2,p{margin:0}
+    h2{
+      font-size:clamp(1.4rem,5vw,2rem);
+      font-weight:950;
+      letter-spacing:-.04em;
+      line-height:1;
+    }
+    .muted{
+      color:var(--m);
+      font-size:.85rem;
+      margin-top:8px;
+      line-height:1.4;
+    }
+    label{
+      display:block;
+      font-size:.68rem;
+      font-weight:950;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+      color:var(--m);
+      margin-bottom:5px;
+      margin-top:14px;
+    }
+    input[type=date],textarea{
+      width:100%;
+      padding:10px 12px;
+      border:1.5px solid var(--l);
+      border-radius:10px;
+      font-size:.88rem;
+      font-family:inherit;
+      color:var(--i);
+      background:white;
+      -webkit-appearance:none;
+      appearance:none;
+      outline:none;
+    }
+    input[type=date]:focus,textarea:focus{border-color:var(--g)}
+    textarea{resize:vertical}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:11px 18px;
+      border-radius:10px;
+      border:none;
+      font-family:inherit;
+      font-size:.88rem;
+      font-weight:950;
+      cursor:pointer;
+      transition:.14s;
+    }
+    .btn-primary{background:var(--g);color:#fff;width:100%;margin-top:14px}
+    .btn-primary:hover{opacity:.87}
+    .btn-sm{padding:7px 13px;font-size:.78rem;font-weight:950}
+    .btn-outline{background:#f0f0ee;color:var(--i);border:1px solid var(--l)}
+    .btn-red{background:#fff0f0;color:var(--r);border:1px solid #ff2b2b38}
+    .btn-copy{background:#167a4514;color:var(--g);border:1px solid #167a4530}
+    .header-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    a.back{
+      color:var(--g);
+      font-size:.82rem;
+      font-weight:900;
+      text-decoration:none;
+    }
+    .count-tag{font-size:.78rem;font-weight:850;color:var(--m)}
+    .action-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+    .copied{color:var(--g);font-size:.8rem;font-weight:950;display:none}
+    .code-box{
+      width:100%;
+      margin-top:12px;
+      padding:12px;
+      border:1.5px solid var(--l);
+      border-radius:10px;
+      font-family:monospace;
+      font-size:.68rem;
+      line-height:1.5;
+      color:var(--m);
+      background:#fafaf8;
+      resize:vertical;
+      min-height:100px;
+      outline:none;
+    }
+    .mrow{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+      align-items:start;
+      padding:12px 0;
+      border-bottom:1px solid var(--l);
+    }
+    .mrow:last-child{border:0}
+    .minner{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+    .vt{font-size:.7rem;font-weight:950;color:var(--m)}
+    .sb{
+      padding:3px 10px;
+      border-radius:8px;
+      background:#f5f5f3;
+      font-size:.9rem;
+      font-weight:950;
+      border:1px solid var(--l);
+    }
+    .ps{
+      padding:5px 8px;
+      border-radius:8px;
+      font-family:inherit;
+      font-size:.75rem;
+      font-weight:850;
+      border:1.5px solid;
+      cursor:pointer;
+      max-width:155px;
+      outline:none;
+    }
+    .ps.ok{border-color:#167a4530;background:#167a4508;color:var(--g)}
+    .ps.bad{border-color:var(--r);background:#fff5f5;color:var(--r)}
+    .xb{
+      width:30px;
+      height:30px;
+      border-radius:50%;
+      border:none;
+      background:#f5f5f3;
+      cursor:pointer;
+      font-size:.85rem;
+      display:grid;
+      place-items:center;
+      color:var(--m);
+    }
+    .xb:hover{background:#ffe4e4;color:var(--r)}
+    .si{
+      display:grid;
+      grid-template-columns:1fr auto;
+      align-items:center;
+      gap:10px;
+      padding:9px 0;
+      border-bottom:1px solid var(--l);
+    }
+    .si:last-child{border:0}
+    .si-t{font-size:.82rem;font-weight:950}
+    .si-d{font-size:.67rem;color:var(--m);font-weight:850;margin-top:2px}
+    .empty{text-align:center;color:var(--m);padding:18px 0;font-size:.84rem}
+    code{font-family:monospace}
+  </style>
+</head>
+
+<body>
+<main class="app">
+  <section class="card">
+    <div class="header-row">
+      <h2>Admin · Padel Jueves</h2>
+      <a href="../" class="back">← Ver ranking</a>
+    </div>
+    <p class="muted">
+      Pega el WhatsApp con los resultados — se interpretan solos. Los rojos hay que corregirlos a mano.
+    </p>
+
+    <label>Fecha</label>
+    <input type="date" id="dt">
+
+    <label>WhatsApp</label>
+    <textarea id="wa" rows="9" placeholder="[14-05-26, 7:30 PM] Pipe: Skewes partner contra Fabri y Cris: 6-4&#10;Skewes partner contra Juaco y Tomy: 6-7&#10;[14-05-26, 7:32 PM] Yeyo: Diego-Terre 7-6 Joaquin-Tomy&#10;..."></textarea>
+
+    <button class="btn btn-primary" onclick="go()">→ Interpretar</button>
+  </section>
+
+  <section class="card panel" id="rsec" style="display:none">
+    <div class="header-row">
+      <h2>Revisar</h2>
+      <span id="mc" class="count-tag"></span>
+    </div>
+    <div id="ml" style="margin-top:8px"></div>
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="save()" style="width:auto;padding:11px 22px">Guardar</button>
+      <button class="btn btn-sm btn-outline" onclick="clr()">Limpiar</button>
+    </div>
+  </section>
+
+  <section class="card panel">
+    <div class="header-row">
+      <h2>Guardados</h2>
+      <span id="sc" class="count-tag"></span>
+    </div>
+    <div id="sl" style="margin-top:8px"></div>
+  </section>
+
+  <section class="card panel">
+    <h2>Exportar</h2>
+    <p class="muted">Copia el código y reemplaza <code>GB=[...]</code> en index.html.</p>
+    <div class="action-row">
+      <button class="btn btn-sm btn-outline" onclick="gen()">Generar</button>
+      <button class="btn btn-sm btn-copy" onclick="cp()">Copiar</button>
+      <button class="btn btn-sm btn-red" onclick="clrS()">Limpiar guardados</button>
+      <span class="copied" id="cpd">Copiado</span>
+    </div>
+    <textarea class="code-box" id="code" readonly placeholder="Haz clic en Generar..."></textarea>
+  </section>
+</main>
+
+<script>
+/* =========================================================
+   JUGADORES
+   Para agregar uno nuevo, súmalo al final de esta lista.
+   ========================================================= */
+const P=[
+  "Felipe Skewes",
+  "Parner Skewes",
+  "Tomas San Juan",
+  "Daniel La Roche",
+  "Fabián Martínez",
+  "Diego Martinez",
+  "Joaquin Villanueva",
+  "Felipe Bindis",
+  "Cristian Pérez",
+  "Nicolás Terré",
+  "Fabrizio Arnalot",
+  "José Manuel Lecaros",
+  "Karl Nebe",
+  "Angello Tapia"
+];
+
+/* =========================================================
+   RESULTADOS BASE
+   La próxima vez pega los nuevos partidos al final de GB,
+   respetando este formato:
+
+   ["AAAA-MM-DD",["Jugador 1","Jugador 2"],["Jugador 3","Jugador 4"],gamesA,gamesB]
+
+   Ejemplo:
+   ["2026-05-21",["Jugador A","Jugador B"],["Jugador C","Jugador D"],6,4]
+   ========================================================= */
+const GB=[
+  // 2026-04-30
+  ["2026-04-30",["Cristian Pérez","Joaquin Villanueva"],["Felipe Skewes","Fabián Martínez"],6,4],
+  ["2026-04-30",["Felipe Skewes","Fabián Martínez"],["Daniel La Roche","Felipe Bindis"],6,3],
+  ["2026-04-30",["Felipe Skewes","Fabián Martínez"],["Tomas San Juan","Diego Martinez"],6,3],
+  ["2026-04-30",["Cristian Pérez","Joaquin Villanueva"],["Daniel La Roche","Felipe Bindis"],6,3],
+  ["2026-04-30",["Cristian Pérez","Joaquin Villanueva"],["Tomas San Juan","Diego Martinez"],6,4],
+  ["2026-04-30",["Daniel La Roche","Felipe Bindis"],["Tomas San Juan","Diego Martinez"],3,6],
+
+  // 2026-05-07
+  ["2026-05-07",["José Manuel Lecaros","Joaquin Villanueva"],["Fabián Martínez","Nicolás Terré"],7,6],
+  ["2026-05-07",["Fabián Martínez","Nicolás Terré"],["Karl Nebe","Diego Martinez"],6,0],
+  ["2026-05-07",["José Manuel Lecaros","Joaquin Villanueva"],["Cristian Pérez","Tomas San Juan"],6,3],
+  ["2026-05-07",["Cristian Pérez","Tomas San Juan"],["Karl Nebe","Diego Martinez"],6,0],
+  ["2026-05-07",["Felipe Skewes","Fabrizio Arnalot"],["Nicolás Terré","Fabián Martínez"],4,6],
+  ["2026-05-07",["Felipe Skewes","Fabrizio Arnalot"],["Felipe Bindis","Angello Tapia"],7,6],
+  ["2026-05-07",["Felipe Skewes","Fabrizio Arnalot"],["Tomas San Juan","Cristian Pérez"],7,6],
+  ["2026-05-07",["José Manuel Lecaros","Joaquin Villanueva"],["Felipe Bindis","Angello Tapia"],6,2],
+  ["2026-05-07",["Karl Nebe","Diego Martinez"],["Felipe Bindis","Angello Tapia"],6,0],
+
+  // 2026-05-14
+  ["2026-05-14",["Felipe Skewes","Parner Skewes"],["Fabrizio Arnalot","Cristian Pérez"],6,4],
+  ["2026-05-14",["Joaquin Villanueva","Tomas San Juan"],["Felipe Skewes","Parner Skewes"],7,6],
+  ["2026-05-14",["Nicolás Terré","Diego Martinez"],["Felipe Skewes","Parner Skewes"],6,4],
+  ["2026-05-14",["Nicolás Terré","Diego Martinez"],["Joaquin Villanueva","Tomas San Juan"],7,6],
+  ["2026-05-14",["Nicolás Terré","Diego Martinez"],["Fabrizio Arnalot","Cristian Pérez"],6,3],
+  ["2026-05-14",["Joaquin Villanueva","Tomas San Juan"],["Fabrizio Arnalot","Cristian Pérez"],6,4]
+];
+
+const KEY='padel-extra-games';
+
+function ld(){
+  try{return JSON.parse(localStorage.getItem(KEY))||[];}
+  catch{return[];}
+}
+
+function sv(a){
+  localStorage.setItem(KEY,JSON.stringify(a));
+}
+
+/* =========================================================
+   ALIAS
+   Aquí se corrigen nombres de WhatsApp.
+   Ejemplo: "Pipe" => "Felipe Skewes"
+   ========================================================= */
+const AL={
+  skewes:'Felipe Skewes',
+  pipe:'Felipe Skewes',
+  presidente:'Felipe Skewes',
+
+  partner:'Parner Skewes',
+  parner:'Parner Skewes',
+
+  tomas:'Tomas San Juan',
+  tomy:'Tomas San Juan',
+  tom:'Tomas San Juan',
+  sanjuan:'Tomas San Juan',
+
+  daniel:'Daniel La Roche',
+  laroche:'Daniel La Roche',
+  roche:'Daniel La Roche',
+
+  fabian:'Fabián Martínez',
+  fabián:'Fabián Martínez',
+
+  diego:'Diego Martinez',
+
+  joaco:'Joaquin Villanueva',
+  juaco:'Joaquin Villanueva',
+  joaquin:'Joaquin Villanueva',
+  joaquín:'Joaquin Villanueva',
+  villanueva:'Joaquin Villanueva',
+
+  bindis:'Felipe Bindis',
+
+  cristian:'Cristian Pérez',
+  cris:'Cristian Pérez',
+  perez:'Cristian Pérez',
+  pérez:'Cristian Pérez',
+
+  nicolas:'Nicolás Terré',
+  nicolás:'Nicolás Terré',
+  terre:'Nicolás Terré',
+  terré:'Nicolás Terré',
+  terresteguin:'Nicolás Terré',
+  yeyo:'Nicolás Terré',
+
+  fabrizio:'Fabrizio Arnalot',
+  fabri:'Fabrizio Arnalot',
+  arnalot:'Fabrizio Arnalot',
+
+  jose:'José Manuel Lecaros',
+  josé:'José Manuel Lecaros',
+  lecaros:'José Manuel Lecaros',
+
+  karl:'Karl Nebe',
+  nebe:'Karl Nebe',
+
+  angello:'Angello Tapia',
+  tapia:'Angello Tapia'
+};
+
+function nm(s){
+  return s
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]/g,'');
+}
+
+function rp(raw){
+  if(!raw||!raw.trim())return{n:null,r:''};
+  raw=raw.trim();
+  const ws=raw.toLowerCase().split(/\s+/);
+
+  for(const w of ws){
+    const k=nm(w);
+    if(AL[k])return{n:AL[k],r:raw};
+    if(AL[w])return{n:AL[w],r:raw};
+  }
+
+  for(let i=0;i<ws.length-1;i++){
+    const k=nm(ws[i]+ws[i+1]);
+    if(AL[k])return{n:AL[k],r:raw};
+  }
+
+  return{n:null,r:raw};
+}
+
+function pp(s){
+  const E={n:null,r:''};
+  if(!s||!s.trim())return[E,E];
+
+  s=s.replace(/[:.,!?]/g,' ').trim();
+
+  if(/\sy\s/i.test(s)){
+    const[a,b]=s.split(/\sy\s/i);
+    return[rp(a.trim()),rp((b||'').trim())];
+  }
+
+  if(/\s-\s/.test(s)){
+    const i=s.indexOf(' - ');
+    return[rp(s.slice(0,i)),rp(s.slice(i+3))];
+  }
+
+  const flat=s.replace(/-/g,' ');
+  const ws=flat.split(/\s+/).filter(Boolean);
+
+  for(let i=1;i<ws.length;i++){
+    const l=rp(ws.slice(0,i).join(' '));
+    const r=rp(ws.slice(i).join(' '));
+    if(l.n&&r.n&&l.n!==r.n)return[l,r];
+  }
+
+  for(let i=1;i<ws.length;i++){
+    const l=rp(ws.slice(0,i).join(' '));
+    if(l.n){
+      const r=rp(ws.slice(i).join(' '));
+      if(!r.n||r.n!==l.n)return[l,r];
+    }
+  }
+
+  return[rp(s),E];
+}
+
+function pl(line,date){
+  if(!line||line.length<5)return null;
+
+  const sm=line.match(/\b([0-7])-([0-7])\b/g);
+  if(!sm)return null;
+
+  const score=sm[sm.length-1];
+  const si=line.lastIndexOf(score);
+  const sa=+score[0];
+  const sb=+score[2];
+
+  let aS,bS;
+
+  if(/\bcontra\b|\bvs\.?\b/i.test(line)){
+    const pts=line.split(/\bcontra\b|\bvs\.?\b/i);
+    aS=(pts[0]||'').replace(/\b[0-7]-[0-7]\b/g,'').trim();
+    bS=(pts[1]||'').replace(/\b[0-7]-[0-7]\b/g,'').replace(/[:]/g,' ').trim();
+  }else{
+    aS=line.slice(0,si).trim();
+    bS=line.slice(si+score.length).trim();
+  }
+
+  if(!aS&&!bS)return null;
+
+  const[a1,a2]=pp(aS);
+  const[b1,b2]=pp(bS);
+
+  if(!a1.n&&!a2.n&&!b1.n&&!b2.n)return null;
+
+  return{date,a1,a2,b1,b2,sa,sb};
+}
+
+let PM=[];
+
+function go(){
+  const text=document.getElementById('wa').value;
+  const dv=document.getElementById('dt').value;
+
+  if(!text.trim())return;
+
+  PM=[];
+  let cd=dv;
+
+  for(const raw of text.split('\n')){
+    const hm=raw.match(/\[(\d{1,2})-(\d{2})-(\d{2}),/);
+
+    if(hm){
+      const d=`20${hm[3]}-${hm[2]}-${String(hm[1]).padStart(2,'0')}`;
+      if(/^\d{4}-\d{2}-\d{2}$/.test(d))cd=d;
+    }
+
+    const content=raw
+      .replace(/^\[[\d\-:,\s\u202f]+[AP]M\]\s*[^:]+:\s*/i,'')
+      .trim();
+
+    if(!content)continue;
+
+    const m=pl(content,cd||dv);
+    if(m)PM.push(m);
+  }
+
+  renderR();
+}
+
+function psel(i,pos,p){
+  const ok=!!p.n;
+  const opts=P.map(n=>`<option value="${n}" ${n===p.n?'selected':''}>${n}</option>`).join('');
+
+  return `
+    <select class="ps ${ok?'ok':'bad'}" data-i="${i}" data-p="${pos}" onchange="upd(this)">
+      <option value="">${ok?'':p.r?'? '+p.r:'—'}</option>
+      ${opts}
+    </select>
+  `;
+}
+
+function renderR(){
+  const sec=document.getElementById('rsec');
+
+  if(!PM.length){
+    sec.style.display='none';
+    return;
+  }
+
+  sec.style.display='';
+  document.getElementById('mc').textContent=PM.length+' partido'+(PM.length!==1?'s':'');
+
+  document.getElementById('ml').innerHTML=PM.map((m,i)=>`
+    <div class="mrow" id="mr${i}">
+      <div>
+        <div class="minner">
+          ${psel(i,'a1',m.a1)}
+          <span class="vt">+</span>
+          ${psel(i,'a2',m.a2)}
+          <span class="sb">${m.sa}–${m.sb}</span>
+          ${psel(i,'b1',m.b1)}
+          <span class="vt">+</span>
+          ${psel(i,'b2',m.b2)}
+        </div>
+        <div style="font-size:.67rem;color:var(--m);margin-top:4px">${fd(m.date)}</div>
+      </div>
+      <button class="xb" onclick="dm(${i})">×</button>
+    </div>
+  `).join('');
+}
+
+function upd(s){
+  const i=+s.dataset.i;
+  const p=s.dataset.p;
+
+  PM[i][p].n=s.value||null;
+  s.className='ps '+(s.value?'ok':'bad');
+}
+
+function dm(i){
+  PM.splice(i,1);
+  renderR();
+}
+
+function clr(){
+  PM=[];
+  document.getElementById('rsec').style.display='none';
+}
+
+function gameKey(g){
+  const [d,a,b,sa,sb]=g;
+  const ta=[...a].sort().join('|');
+  const tb=[...b].sort().join('|');
+  return `${d}__${ta}__${tb}__${sa}-${sb}`;
+}
+
+function reverseGameKey(g){
+  const [d,a,b,sa,sb]=g;
+  const ta=[...a].sort().join('|');
+  const tb=[...b].sort().join('|');
+  return `${d}__${tb}__${ta}__${sb}-${sa}`;
+}
+
+function save(){
+  const ok=PM.filter(m=>m.a1.n&&m.a2.n&&m.b1.n&&m.b2.n);
+  const bad=PM.length-ok.length;
+
+  if(!ok.length){
+    alert('Ningún partido tiene los 4 jugadores completos.');
+    return;
+  }
+
+  if(bad&&!confirm(`${bad} partido${bad>1?'s':''} incompleto${bad>1?'s':''}. ¿Guardar solo los ${ok.length} completo${ok.length>1?'s':''}?`))return;
+
+  const ex=ld();
+  const all=[...GB,...ex];
+  const existing=new Set(all.map(gameKey));
+
+  for(const m of ok){
+    const g=[m.date,[m.a1.n,m.a2.n],[m.b1.n,m.b2.n],m.sa,m.sb];
+    if(existing.has(gameKey(g))||existing.has(reverseGameKey(g)))continue;
+    ex.push(g);
+    existing.add(gameKey(g));
+  }
+
+  sv(ex);
+  PM=[];
+  document.getElementById('rsec').style.display='none';
+  renderS();
+}
+
+const fd=d=>`${+d.slice(8)} de ${['Ene.','Feb.','Mar.','Abr.','May.','Jun.','Jul.','Ago.','Sep.','Oct.','Nov.','Dic.'][+d.slice(5,7)-1]}`;
+
+const sn=n=>{
+  const p=n.split(' ');
+  return p.length>2?p[0]+' '+p[p.length-1]:n;
+};
+
+function renderS(){
+  const ex=ld();
+
+  document.getElementById('sc').textContent=ex.length?ex.length+' partido'+(ex.length!==1?'s':''):'';
+
+  const el=document.getElementById('sl');
+
+  if(!ex.length){
+    el.innerHTML='<div class="empty">Nada guardado.</div>';
+    return;
+  }
+
+  el.innerHTML=ex.map(([d,a,b,sa,sb],i)=>`
+    <div class="si">
+      <div>
+        <div class="si-t">${a.map(sn).join(' + ')} ${sa}–${sb} ${b.map(sn).join(' + ')}</div>
+        <div class="si-d">${fd(d)}</div>
+      </div>
+      <button class="xb" onclick="ds(${i})">×</button>
+    </div>
+  `).join('');
+}
+
+function ds(i){
+  if(!confirm('¿Eliminar?'))return;
+
+  const ex=ld();
+  ex.splice(i,1);
+  sv(ex);
+  renderS();
+}
+
+function clrS(){
+  if(!ld().length)return alert('No hay nada guardado.');
+
+  if(!confirm('¿Limpiar todo? Asegúrate de haber actualizado index.html.'))return;
+
+  sv([]);
+  renderS();
+  document.getElementById('code').value='';
+}
+
+function gen(){
+  document.getElementById('code').value='const GB='+JSON.stringify([...GB,...ld()],null,2)+';';
+}
+
+function cp(){
+  gen();
+
+  const v=document.getElementById('code').value;
+  if(!v)return;
+
+  navigator.clipboard.writeText(v).then(()=>{
+    const e=document.getElementById('cpd');
+    e.style.display='inline';
+    setTimeout(()=>e.style.display='none',2500);
+  }).catch(()=>{
+    document.getElementById('code').select();
+    document.execCommand('copy');
+  });
+}
+
+function nextThu(){
+  const d=new Date();
+  const diff=(4-d.getDay()+7)%7||7;
+  d.setDate(d.getDate()+diff);
+  return d.toISOString().slice(0,10);
+}
+
+document.getElementById('dt').value=nextThu();
+renderS();
+</script>
+</body>
+</html>
+'''
+
+path = Path("/mnt/data/admin_padel_jueves_actualizado.html")
+path.write_text(html, encoding="utf-8")
+print(f"Archivo creado: {path}")
+print(f"Tamaño: {path.stat().st_size:,} bytes")
