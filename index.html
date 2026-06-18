@@ -3,7 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ranking Padel Jueves</title>
+<title>Americanos de los Jueves · Ranking</title>
+<meta name="description" content="Ranking ELO, reyes de cada fecha y la ficha de cada jugador de los Americanos de los jueves. ¿Quién manda los jueves?">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fabmarti15.github.io/ranking-padel-jueves/">
+<meta property="og:title" content="Americanos de los Jueves · Ranking">
+<meta property="og:description" content="Ranking ELO, reyes de cada fecha y la ficha de cada jugador. ¿Quién manda los jueves?">
+<meta property="og:image" content="https://fabmarti15.github.io/ranking-padel-jueves/og.png?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Americanos de los Jueves · Ranking">
+<meta name="twitter:description" content="Ranking ELO, reyes de cada fecha y la ficha de cada jugador.">
+<meta name="twitter:image" content="https://fabmarti15.github.io/ranking-padel-jueves/og.png?v=1">
 <style>
 :root{--bg:#f4f4f1;--c:#fff;--i:#171717;--m:#73706c;--l:#e4e1dc;--g:#167a45;--r:#ff2b2b;--y:#fff1a8;--b:#f4dccb;--s:0 18px 45px #1111;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 *{box-sizing:border-box}
@@ -12,9 +24,12 @@ body{margin:0;overflow-x:hidden;color:var(--i);background:radial-gradient(circle
 .card{background:var(--c);border:1px solid var(--l);border-radius:14px;box-shadow:var(--s);padding:clamp(16px,4vw,28px)}
 .panel{margin-top:18px;overflow:hidden}
 h1,h2,p{margin:0}
-h1{font-size:clamp(2.25rem,9vw,4.4rem);line-height:.9;letter-spacing:-.06em}
+h1{font-size:clamp(2.1rem,8vw,3.8rem);line-height:.9;letter-spacing:-.06em}
 h2{font-size:clamp(1.8rem,6vw,3rem);line-height:.95;letter-spacing:-.05em}
 .muted{color:var(--m)}
+.brand{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.crest{filter:drop-shadow(0 8px 18px #167a4540)}
+.brand .sub{color:var(--m);font-size:.92rem;font-weight:850;letter-spacing:.02em}
 .kings{margin-top:24px;padding:18px;border:1px solid #167a452e;border-radius:20px;background:linear-gradient(135deg,#167a450f,#fffffff5),#fafaf8;box-shadow:0 18px 45px #1111}
 .label{display:inline-flex;gap:6px;color:var(--g);font-size:.72rem;font-weight:950;letter-spacing:.1em;text-transform:uppercase}
 .king-name{display:block;margin-top:10px;font-size:clamp(1.35rem,6vw,2.2rem);line-height:.98;font-weight:950;letter-spacing:-.055em;overflow-wrap:anywhere}
@@ -29,12 +44,36 @@ h2{font-size:clamp(1.8rem,6vw,3rem);line-height:.95;letter-spacing:-.05em}
 .tip:after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 10px);width:min(260px,80vw);padding:10px 12px;border-radius:10px;background:#171717;color:white;font-size:.78rem;line-height:1.25;font-weight:800;white-space:normal;transform:translateX(-50%) translateY(4px);opacity:0;pointer-events:none;transition:.16s;z-index:3}
 .tip:hover:after,.tip:focus:after{opacity:1;transform:translateX(-50%)}
 @keyframes e{45%{transform:translateY(-5px) rotate(5deg)}0%,100%{transform:translateY(0) rotate(-5deg)}}
-.stats{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:18px;color:var(--m);font-size:.82rem;font-weight:750}
+.stats{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:18px;justify-content:center;color:var(--m);font-size:.82rem;font-weight:750}
 .stats strong{color:var(--i);font-weight:900}
+.lk{cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;text-decoration-color:#b9b6b1}
+.lk:hover{color:var(--g);text-decoration-color:var(--g)}
+.hint{margin-top:6px;color:var(--m);font-size:.8rem;font-weight:650}
+#player-search{margin:0}
+.srch-lbl{display:block;font-size:.72rem;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:var(--m);margin-bottom:8px}
+.srch-wrap{position:relative;display:flex;gap:8px}
+.srch-wrap input{flex:1;min-width:0;padding:12px 14px;border:1px solid var(--l);border-radius:12px;font-size:1rem;font-weight:700;background:#fafaf8;color:var(--i)}
+.srch-wrap input:focus{outline:none;border-color:var(--g);background:#fff}
+.srch-wrap button{padding:0 18px;border:0;border-radius:12px;background:var(--g);color:#fff;font-weight:900;font-size:.92rem;cursor:pointer}
+.suggestions{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border:1px solid var(--l);border-radius:12px;box-shadow:var(--s);overflow:hidden;z-index:5;display:none}
+.suggestions.show{display:block}
+.search-suggestion{display:block;width:100%;text-align:left;padding:12px 14px;border:0;border-bottom:1px solid var(--l);background:#fff;font-size:.95rem;font-weight:800;cursor:pointer;color:var(--i)}
+.search-suggestion:last-child{border-bottom:0}
+.search-suggestion:hover{background:#167a450d}
+.rey-row{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--l)}
+.rey-row:last-child{border:0}
+.rey-pos{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:#ededed;font-weight:900;font-size:.9rem}
+.rey-row:first-child .rey-pos{background:var(--y)}
+.rey-name{font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rey-count{color:var(--g);font-weight:950;white-space:nowrap}
+.rey-count small{color:var(--m);font-weight:850;font-size:.7rem}
 .list{margin-top:16px}
-.player{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--l);cursor:pointer}
-.player:last-child{border:0}
-.player.active{background:#167a450d;margin:0 -10px;padding:14px 10px;border-radius:12px}
+.player-wrap{border-bottom:1px solid var(--l)}
+.player-wrap:last-child{border-bottom:0}
+summary.player{list-style:none;-webkit-tap-highlight-color:transparent}
+summary.player::-webkit-details-marker{display:none}
+.player{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 0;cursor:pointer}
+details[open]>.player{background:#167a450d;margin:0 -10px;padding:14px 10px;border-radius:12px}
 .rank{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:#ededed;font-weight:900}
 .rank1{background:var(--y)}
 .rank3{background:var(--b)}
@@ -47,14 +86,23 @@ h2{font-size:clamp(1.8rem,6vw,3rem);line-height:.95;letter-spacing:-.05em}
 .pts small{color:var(--m);font-size:.68rem;font-weight:900;text-transform:uppercase}
 .elo{color:var(--g);font-weight:900}
 .loss{color:#d71919!important}
-.detail{display:block;width:100%;white-space:normal}
-.hist{display:grid;gap:12px;padding:14px 0 16px}
-.sum{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.box{min-height:64px;display:grid;align-content:center;gap:6px;padding:10px;border:1px solid var(--l);border-radius:14px;background:white}
-.box small{color:var(--m);font-size:.64rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
-.box b{font-size:1.18rem;line-height:1;font-weight:950}
+.detail{display:block;width:100%;white-space:normal;padding-bottom:6px}
+.hist{display:grid;gap:12px;padding:6px 0 8px}
+.sum{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.box{min-height:60px;display:grid;align-content:center;gap:5px;padding:10px;border:1px solid var(--l);border-radius:14px;background:#fff;text-align:center}
+.box small{color:var(--m);font-size:.6rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase}
+.box b{font-size:1.12rem;line-height:1;font-weight:950}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chip{border:1px solid var(--l);border-radius:14px;padding:10px 12px;background:#fafaf8;display:grid;gap:3px}
+.chip small{color:var(--m);font-size:.64rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase}
+.chip b{font-size:.96rem;font-weight:950}
+.chip span{color:var(--m);font-size:.72rem;font-weight:800}
+.rank-evo{border:1px solid var(--l);border-radius:14px;padding:12px;background:#fff}
+.rank-evo-hd{font-size:.72rem;font-weight:950;letter-spacing:.05em;text-transform:uppercase;color:var(--m)}
+.rank-svg{display:block;width:100%;height:auto;margin-top:4px}
+.rank-evo-ft{color:var(--m);font-size:.72rem;font-weight:800;text-align:right}
 .day{margin-top:4px;color:var(--m);font-size:.84rem;font-weight:950}
-.match{display:grid;grid-template-columns:26px 1fr auto;grid-template-areas:"res copy copy" ". sc mp";gap:6px 8px;align-items:center;padding:10px;border:1px solid var(--l);border-radius:12px;background:white}
+.match{display:grid;grid-template-columns:26px 1fr auto;grid-template-areas:"res copy copy" ". sc mp";gap:6px 8px;align-items:center;padding:10px;border:1px solid var(--l);border-radius:12px;background:#fff;margin-top:8px}
 .win{border-color:#167a4521;background:#167a4512}
 .lose{border-color:#ff2b2b47;background:#ff2b2b1a}
 .res{grid-area:res}
@@ -64,27 +112,57 @@ h2{font-size:clamp(1.8rem,6vw,3rem);line-height:.95;letter-spacing:-.05em}
 .mp{grid-area:mp;display:inline-flex;justify-content:center;align-items:center;min-height:28px;padding:0 8px;border-radius:8px;border:1px solid #167a4538;background:#f3faf6;color:var(--g);font-size:.78rem;font-weight:950;justify-self:end}
 .mp.loss{border-color:#ff2b2b57;background:#ff2b2b1f}
 .wrap{margin-top:16px;overflow-x:auto}
-table{width:100%;min-width:620px;border-collapse:collapse}
+table{width:100%;min-width:560px;border-collapse:collapse}
 th,td{padding:10px 8px;text-align:left;border-bottom:1px solid var(--l);white-space:nowrap;font-size:.78rem}
 th{color:var(--m);font-size:.62rem;letter-spacing:.07em;text-transform:uppercase}
 .exp{display:grid;gap:12px;margin-top:18px}
 .exp div{border:1px solid var(--l);border-radius:8px;padding:16px;background:#fafaf8}
 .exp strong{display:block;margin-bottom:8px}
 .exp p{color:var(--m);font-weight:650;line-height:1.35}
-@media(max-width:420px){.app{padding:8px}.card{padding:14px}.player{grid-template-columns:36px 1fr 56px;gap:8px;padding:12px 0}.player.active{margin:0 -8px;padding:12px 8px}.rank{width:32px;height:32px;font-size:.92rem}.p-name{font-size:.94rem}.p-meta{font-size:.66rem;gap:6px;margin-top:4px}.bar{width:50px;height:5px;flex-basis:50px}.pts b{font-size:1.08rem}.pts small{font-size:.6rem}}
+@media(max-width:480px){.sum{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.app{padding:8px}.card{padding:14px}.player{grid-template-columns:36px 1fr 56px;gap:8px;padding:12px 0}.rank{width:32px;height:32px;font-size:.92rem}.p-name{font-size:.94rem}.p-meta{font-size:.66rem;gap:6px;margin-top:4px}.bar{width:50px;height:5px;flex-basis:50px}.pts b{font-size:1.08rem}.pts small{font-size:.6rem}.chips{grid-template-columns:1fr}}
 @media(max-width:360px){.player{grid-template-columns:32px 1fr 50px;gap:6px;padding:10px 0}.rank{width:28px;height:28px;font-size:.84rem}.p-name{font-size:.86rem}.p-meta{font-size:.58rem;gap:5px;margin-top:3px}.bar{width:38px;height:4px;flex-basis:38px}.pts b{font-size:.98rem}.pts small{font-size:.54rem}}
 </style>
 </head>
 <body>
 <main class="app">
   <section class="card">
-    <h1>Americanos de los jueves</h1>
+    <div class="brand">
+      <svg class="crest" viewBox="0 0 120 120" width="86" height="86" aria-hidden="true">
+        <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e9457"/><stop offset="1" stop-color="#0f5e34"/></linearGradient></defs>
+        <circle cx="60" cy="60" r="54" fill="url(#cg)"/>
+        <circle cx="60" cy="60" r="54" fill="none" stroke="#0c4f2c" stroke-width="3"/>
+        <g transform="rotate(-30 60 60)" fill="none" stroke="#fff" stroke-width="4"><ellipse cx="60" cy="44" rx="16" ry="20"/><line x1="60" y1="64" x2="60" y2="92" stroke-linecap="round"/></g>
+        <g transform="rotate(30 60 60)" fill="none" stroke="#fff" stroke-width="4"><ellipse cx="60" cy="44" rx="16" ry="20"/><line x1="60" y1="64" x2="60" y2="92" stroke-linecap="round"/></g>
+        <circle cx="60" cy="60" r="6.5" fill="#eaff3a" stroke="#0c4f2c" stroke-width="2"/>
+      </svg>
+      <h1>Americanos de los Jueves</h1>
+      <div class="sub">Ranking ELO · pádel</div>
+    </div>
     <div class="kings" id="kings"></div>
     <div class="stats"><span>Histórico de visitas: <strong id="visits">21</strong></span><span>Viendo ahora mismo: <strong>1</strong></span></div>
   </section>
 
   <section class="card panel">
+    <h2>👑 Reyes históricos</h2>
+    <p class="muted">Quién ha ganado más fechas (mejor pareja del día).</p>
+    <div class="list" id="reyes-hist"></div>
+  </section>
+
+  <section class="card panel">
+    <form id="player-search" autocomplete="off">
+      <label class="srch-lbl" for="player-search-input">🔎 Busca tu ficha</label>
+      <div class="srch-wrap">
+        <input id="player-search-input" type="search" placeholder="Escribe un nombre…">
+        <button type="submit">Ver</button>
+        <div id="player-search-suggestions" class="suggestions"></div>
+      </div>
+    </form>
+  </section>
+
+  <section class="card panel">
     <h2>Ranking oficial</h2>
+    <p class="hint">Toca un nombre para ver su ficha (stats, rivales y evolución del puesto).</p>
     <div class="list" id="ranking"></div>
   </section>
 
@@ -96,11 +174,6 @@ th{color:var(--m);font-size:.62rem;letter-spacing:.07em;text-transform:uppercase
         <thead><tr><th>Fecha</th><th>Pareja A</th><th>Resultado</th><th>Pareja B</th><th>Puntos</th></tr></thead>
         <tbody id="results"></tbody>
       </table>
-    </div>
-    <div class="exp">
-      <div><strong>Que significa puntos</strong><p>Es lo que gana cada jugador de la pareja vencedora y pierde cada jugador de la pareja derrotada.</p></div>
-      <div><strong>Como se calcula</strong><p>Parte en 28 puntos. Si ganas por más games sube un poco. Si le ganas a una pareja con mejor ELO, también vale más.</p></div>
-      <div><strong>Como mejorar</strong><p>Ganar partidos suma ELO. Ganarle a parejas fuertes y cerrar sets con buena diferencia acelera la subida.</p></div>
     </div>
   </section>
 
@@ -117,30 +190,17 @@ th{color:var(--m);font-size:.62rem;letter-spacing:.07em;text-transform:uppercase
 
 <script>
 /* =========================================================
-   JUGADORES
-   Para agregar uno nuevo, súmalo al final.
+   JUGADORES — para agregar uno nuevo, súmalo al final.
    ========================================================= */
 const P=[
-  "Felipe Skewes",
-  "Ignacio Tejeda",
-  "Tomas San Juan",
-  "Daniel La Roche",
-  "Fabián Martínez",
-  "Diego Martinez",
-  "Joaquin Villanueva",
-  "Felipe Bindis",
-  "Cristian Pérez",
-  "Nicolás Terré",
-  "Fabrizio Arnalot",
-  "José Manuel Lecaros",
-  "Karl Nebe",
-  "Angello Tapia"
+  "Felipe Skewes","Ignacio Tejeda","Tomas San Juan","Daniel La Roche",
+  "Fabián Martínez","Diego Martinez","Joaquin Villanueva","Felipe Bindis",
+  "Cristian Pérez","Nicolás Terré","Fabrizio Arnalot","José Manuel Lecaros",
+  "Karl Nebe","Angello Tapia"
 ];
 
 /* =========================================================
-   RESULTADOS
-   La próxima vez pega los nuevos partidos al final de esta lista.
-   Formato:
+   RESULTADOS — pega los partidos nuevos al final, en orden de fecha.
    ["AAAA-MM-DD",["Jugador 1","Jugador 2"],["Jugador 3","Jugador 4"],gamesA,gamesB]
    ========================================================= */
 const G=[
@@ -187,183 +247,242 @@ const G=[
   ["2026-06-11",["Karl Nebe","Nicolás Terré"],["Fabián Martínez","Daniel La Roche"],5,7]
 ].map(([d,a,b,sa,sb])=>({d,a,b,sa,sb}));
 
-const $=s=>document.querySelector(s),
-av=a=>a.reduce((x,y)=>x+y,0)/a.length,
-sg=n=>(n>0?"+":"")+Math.round(n),
-eg=m=>m.sa*m.sb==0?`<span class="egg tip" tabindex="0" data-tip="Huevito: 6-0. No hubo misericordia.">🥚</span>`:"";
-
+/* ── nombres ── */
 const S={
-  "Felipe Skewes":"Skewes",
-  "Ignacio Tejeda":"Tejeda",
-  "Tomas San Juan":"San Juan",
-  "Daniel La Roche":"La Roche",
-  "Fabián Martínez":"F. Martínez",
-  "Diego Martinez":"D. Martínez",
-  "Joaquin Villanueva":"Villanueva",
-  "Felipe Bindis":"Bindis",
-  "Cristian Pérez":"Pérez",
-  "Nicolás Terré":"Terré",
-  "Fabrizio Arnalot":"Arnalot",
-  "José Manuel Lecaros":"Lecaros",
-  "Karl Nebe":"Nebe",
-  "Angello Tapia":"Tapia"
+  "Felipe Skewes":"Skewes","Ignacio Tejeda":"Tejeda","Tomas San Juan":"San Juan","Daniel La Roche":"La Roche",
+  "Fabián Martínez":"F. Martínez","Diego Martinez":"D. Martínez","Joaquin Villanueva":"Villanueva","Felipe Bindis":"Bindis",
+  "Cristian Pérez":"Pérez","Nicolás Terré":"Terré","Fabrizio Arnalot":"Arnalot","José Manuel Lecaros":"Lecaros",
+  "Karl Nebe":"Nebe","Angello Tapia":"Tapia"
 };
-
 const M={
-  "Felipe Skewes":"Felipe S.",
-  "Ignacio Tejeda":"Ignacio T.",
-  "Tomas San Juan":"Tomas S.",
-  "Daniel La Roche":"Daniel L.",
-  "Fabián Martínez":"Fabián M.",
-  "Diego Martinez":"Diego M.",
-  "Joaquin Villanueva":"Joaquin V.",
-  "Felipe Bindis":"Felipe B.",
-  "Cristian Pérez":"Cristian P.",
-  "Nicolás Terré":"Nicolás T.",
-  "Fabrizio Arnalot":"Fabrizio A.",
-  "José Manuel Lecaros":"José Manuel",
-  "Karl Nebe":"Karl N.",
-  "Angello Tapia":"Angello T."
+  "Felipe Skewes":"Felipe S.","Ignacio Tejeda":"Ignacio T.","Tomas San Juan":"Tomas S.","Daniel La Roche":"Daniel L.",
+  "Fabián Martínez":"Fabián M.","Diego Martinez":"Diego M.","Joaquin Villanueva":"Joaquin V.","Felipe Bindis":"Felipe B.",
+  "Cristian Pérez":"Cristian P.","Nicolás Terré":"Nicolás T.","Fabrizio Arnalot":"Fabrizio A.","José Manuel Lecaros":"José Manuel",
+  "Karl Nebe":"Karl N.","Angello Tapia":"Angello T."
 };
 
-const hn=n=>S[n]||n,
-mn=n=>M[n]||n,
-tm=t=>t.map(hn).join(" / "),
-fd=d=>`${+d.slice(8)} de ${["Ene.","Feb.","Mar.","Abr.","May.","Jun.","Jul.","Ago.","Sep.","Oct.","Nov.","Dic."][+d.slice(5,7)-1]}`,
-ky=t=>[...t].sort().join("||"),
-dl=(m,ea,eb)=>Math.round(28*Math.min(1.35,1+Math.abs(m.sa-m.sb)*.035)*Math.abs((m.sa>m.sb?1:0)-1/(1+10**((eb-ea)/400))));
+/* ── helpers ── */
+const $=s=>document.querySelector(s),
+  avg=a=>a.reduce((x,y)=>x+y,0)/a.length,
+  sg=n=>(n>0?"+":"")+Math.round(n),
+  esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])),
+  clean=s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().trim(),
+  eg=m=>m.sa*m.sb==0?`<span class="egg tip" tabindex="0" data-tip="Huevito: 6-0. No hubo misericordia.">🥚</span>`:"",
+  hn=n=>S[n]||n,
+  mn=n=>M[n]||n,
+  lk=(n,disp)=>`<span class="lk" data-go="${esc(n)}">${disp||mn(n)}</span>`,
+  tmLk=t=>t.map(n=>lk(n,hn(n))).join(" / "),
+  fd=d=>`${+d.slice(8)} de ${["Ene.","Feb.","Mar.","Abr.","May.","Jun.","Jul.","Ago.","Sep.","Oct.","Nov.","Dic."][+d.slice(5,7)-1]}`,
+  ky=t=>[...t].sort().join("||"),
+  dl=(m,ea,eb)=>Math.round(28*Math.min(1.35,1+Math.abs(m.sa-m.sb)*.035)*Math.abs((m.sa>m.sb?1:0)-1/(1+10**((eb-ea)/400))));
 
+const FECHAS=[...new Set(G.map(m=>m.d))].sort(),
+  LAST=FECHAS[FECHAS.length-1];
+
+/* ELO por partido (con cambio de puntos por jugador) */
 function hist(){
-  let s=new Map(P.map(p=>[p,{e:1000}]));
+  let s=new Map(P.map(p=>[p,1000]));
   return G.map(m=>{
-    let p=dl(m,av(m.a.map(n=>s.get(n).e)),av(m.b.map(n=>s.get(n).e))),
-        w=m.sa>m.sb?m.a:m.b,
-        c={};
-
-    [...m.a,...m.b].forEach(n=>{
-      let b=s.get(n).e,
-          ch=w.includes(n)?p:-p;
-      c[n]={b,ch,a:b+ch};
-      s.get(n).e+=ch;
-    });
-
-    return{...m,p,c};
+    let p=dl(m,avg(m.a.map(n=>s.get(n))),avg(m.b.map(n=>s.get(n)))),
+        w=m.sa>m.sb?m.a:m.b, c={};
+    [...m.a,...m.b].forEach(n=>{let b=s.get(n),ch=w.includes(n)?p:-p;c[n]={b,ch,a:b+ch};s.set(n,b+ch);});
+    return {...m,p,c};
   });
 }
+const HIST=hist();
 
-function rank(){
-  let s=new Map(P.map(n=>[n,{n,e:1000,pl:0,w:0,l:0,d:0}]));
-
+/* tabla de posiciones hasta una fecha (inclusive) */
+function standings(upto){
+  let e=new Map(P.map(n=>[n,1000])), pl=new Map(P.map(n=>[n,0]));
   G.forEach(m=>{
-    let p=dl(m,av(m.a.map(n=>s.get(n).e)),av(m.b.map(n=>s.get(n).e))),
-        aw=m.sa>m.sb,
-        W=aw?m.a:m.b,
-        L=aw?m.b:m.a;
-
-    [...m.a,...m.b].forEach(n=>s.get(n).pl++);
-
-    W.forEach(n=>{
-      s.get(n).w++;
-      s.get(n).e+=p;
-    });
-
-    L.forEach(n=>{
-      s.get(n).l++;
-      s.get(n).e-=p;
-    });
-
-    m.a.forEach(n=>s.get(n).d+=m.sa-m.sb);
-    m.b.forEach(n=>s.get(n).d+=m.sb-m.sa);
+    if(upto && m.d>upto) return;
+    let p=dl(m,avg(m.a.map(n=>e.get(n))),avg(m.b.map(n=>e.get(n)))),
+        w=m.sa>m.sb?m.a:m.b, L=m.sa>m.sb?m.b:m.a;
+    w.forEach(n=>e.set(n,e.get(n)+p)); L.forEach(n=>e.set(n,e.get(n)-p));
+    [...m.a,...m.b].forEach(n=>pl.set(n,pl.get(n)+1));
   });
-
-  return[...s.values()].sort((a,b)=>b.e-a.e||b.w-a.w||b.d-a.d||P.indexOf(a.n)-P.indexOf(b.n));
+  return P.filter(n=>pl.get(n)>0).map(n=>({n,e:e.get(n),pl:pl.get(n)})).sort((a,b)=>b.e-a.e||P.indexOf(a.n)-P.indexOf(b.n));
 }
+const STAND={}; FECHAS.forEach(f=>STAND[f]=standings(f));
+const RANK=STAND[LAST];
+const rankOf=n=>{const i=RANK.findIndex(x=>x.n===n);return i<0?999:i+1;};
+function rankHist(n){const o=[];FECHAS.forEach(f=>{const i=STAND[f].findIndex(x=>x.n===n);if(i>=0)o.push({fecha:f,rank:i+1});});return o;}
 
-function kings(){
-  let h=hist(),
-      last=[...new Set(h.map(m=>m.d))].sort().at(-1),
-      mp=new Map(),
-      get=t=>mp.get(ky(t))||mp.set(ky(t),{t,w:0,l:0,d:0,p:0,r:[]}).get(ky(t));
-
-  h.filter(m=>m.d==last).forEach(m=>{
-    let aw=m.sa>m.sb,
-        A=get(m.a),
-        B=get(m.b);
-
-    Object.assign(A,{
-      w:A.w+(aw?1:0),
-      l:A.l+(aw?0:1),
-      d:A.d+m.sa-m.sb,
-      p:A.p+(aw?m.p:-m.p)
-    });
-    A.r.push({f:m.sa,a:m.sb,o:m.b,m});
-
-    Object.assign(B,{
-      w:B.w+(aw?0:1),
-      l:B.l+(aw?1:0),
-      d:B.d+m.sb-m.sa,
-      p:B.p+(aw?-m.p:m.p)
-    });
-    B.r.push({f:m.sb,a:m.sa,o:m.a,m});
+/* W/L/games por jugador */
+function fullStats(){
+  let st=new Map(P.map(n=>[n,{n,w:0,l:0,d:0,pl:0}]));
+  G.forEach(m=>{
+    let aw=m.sa>m.sb, W=aw?m.a:m.b, L=aw?m.b:m.a;
+    [...m.a,...m.b].forEach(n=>st.get(n).pl++);
+    W.forEach(n=>st.get(n).w++); L.forEach(n=>st.get(n).l++);
+    m.a.forEach(n=>st.get(n).d+=m.sa-m.sb); m.b.forEach(n=>st.get(n).d+=m.sb-m.sa);
   });
+  return st;
+}
+const ST=fullStats();
 
-  return[...mp.values()].sort((a,b)=>b.w-a.w||b.d-a.d||b.p-a.p)[0];
+/* compañeros, rivales y racha */
+function profile(name){
+  const mine=HIST.filter(m=>[...m.a,...m.b].includes(name));
+  let partners={}, rivals={}, seq=[];
+  mine.forEach(m=>{
+    const inA=m.a.includes(name), me=inA?m.a:m.b, opp=inA?m.b:m.a, myS=inA?m.sa:m.sb, opS=inA?m.sb:m.sa, won=myS>opS;
+    const partner=me.find(x=>x!==name);
+    if(partner){ (partners[partner]=partners[partner]||{n:partner,g:0,w:0}).g++; if(won)partners[partner].w++; }
+    opp.forEach(o=>{ const r=rivals[o]=rivals[o]||{n:o,g:0,w:0,l:0}; r.g++; won?r.w++:r.l++; });
+    seq.push(won);
+  });
+  const topPartner=Object.values(partners).sort((a,b)=>b.g-a.g||b.w-a.w)[0],
+        mejorRival=Object.values(rivals).filter(r=>r.w>0).sort((a,b)=>b.w-a.w||a.l-b.l)[0],
+        peorRival=Object.values(rivals).filter(r=>r.l>0).sort((a,b)=>b.l-a.l||a.w-b.w)[0];
+  let streak=0,sign=null;
+  for(let i=seq.length-1;i>=0;i--){ if(sign===null){sign=seq[i];streak=1;} else if(seq[i]===sign)streak++; else break; }
+  const rh=rankHist(name), best=rh.length?Math.min(...rh.map(x=>x.rank)):null;
+  return {topPartner,mejorRival,peorRival,streak,sign,best};
 }
 
-function ph(n){
-  return hist()
-    .filter(m=>[...m.a,...m.b].includes(n))
-    .map(m=>{
-      let A=m.a.includes(n),
-          pt=A?m.a:m.b,
-          rt=A?m.b:m.a,
-          ps=A?m.sa:m.sb,
-          rs=A?m.sb:m.sa;
-
-      return{...m,pt,rt,ps,rs,won:ps>rs,...m.c[n]};
-    })
-    .reverse();
+/* reyes de una fecha (mejor pareja del día) */
+function kingsForFecha(f){
+  const ms=HIST.filter(m=>m.d===f); if(!ms.length)return null;
+  const mp=new Map(), get=t=>mp.get(ky(t))||(mp.set(ky(t),{t,w:0,l:0,d:0,p:0,r:[]}),mp.get(ky(t)));
+  ms.forEach(m=>{
+    let aw=m.sa>m.sb, A=get(m.a), B=get(m.b);
+    A.w+=aw?1:0; A.l+=aw?0:1; A.d+=m.sa-m.sb; A.p+=aw?m.p:-m.p; A.r.push({f:m.sa,a:m.sb,o:m.b,m});
+    B.w+=aw?0:1; B.l+=aw?1:0; B.d+=m.sb-m.sa; B.p+=aw?-m.p:m.p; B.r.push({f:m.sb,a:m.sa,o:m.a,m});
+  });
+  return [...mp.values()].sort((a,b)=>b.w-a.w||b.d-a.d||b.p-a.p)[0];
+}
+function reyesHistoricos(){
+  const tally={};
+  FECHAS.forEach(f=>{const k=kingsForFecha(f); if(k)k.t.forEach(n=>tally[n]=(tally[n]||0)+1);});
+  return Object.entries(tally).map(([n,c])=>({n,c})).sort((a,b)=>b.c-a.c||rankOf(a.n)-rankOf(b.n));
 }
 
-function det(n){
-  let h=ph(n),
-      w=h.filter(m=>m.won).length,
-      fin=1000+h.reduce((s,m)=>s+m.ch,0),
-      g=h.reduce((o,m)=>((o[fd(m.d)]??=[]).push(m),o),{});
-
-  return`<div class="detail"><div class="hist"><strong>Historial de ${n}</strong><div class="sum"><div class="box"><small>Pts.</small><b>${Math.round(fin)}</b></div><div class="box"><small>Victorias</small><b>${w}</b></div><div class="box"><small>Derrotas</small><b>${h.length-w}</b></div><div class="box"><small>Win Rate</small><b>${h.length?((w/h.length)*100).toFixed(1):"0.0"}%</b></div></div>${Object.entries(g).map(([d,ms])=>`<div><div class="day">${d}</div>${ms.map(m=>`<div class="match ${m.won?"win":"lose"}"><span class="res ${m.won?"elo":"loss"}">${m.won?"W":"L"}</span><span class="copy">con <strong>${hn(m.pt.find(x=>x!=n)||"")}</strong> vs ${tm(m.rt)}</span><span class="sc">${m.ps}-${m.rs} ${eg(m)}</span><span class="mp ${m.ch<0?"loss":""}">${sg(m.ch)} Pts.</span></div>`).join("")}</div>`).join("")}</div></div>`;
+/* gráfico de evolución del puesto (curva suave Catmull-Rom) */
+function smoothPath(pts){
+  if(pts.length<2)return"";
+  let d="M"+pts[0][0].toFixed(1)+","+pts[0][1].toFixed(1);
+  for(let i=0;i<pts.length-1;i++){
+    const p0=pts[i-1]||pts[i],p1=pts[i],p2=pts[i+1],p3=pts[i+2]||p2;
+    const c1x=p1[0]+(p2[0]-p0[0])/6,c1y=p1[1]+(p2[1]-p0[1])/6,c2x=p2[0]-(p3[0]-p1[0])/6,c2y=p2[1]-(p3[1]-p1[1])/6;
+    d+=" C"+c1x.toFixed(1)+","+c1y.toFixed(1)+" "+c2x.toFixed(1)+","+c2y.toFixed(1)+" "+p2[0].toFixed(1)+","+p2[1].toFixed(1);
+  }
+  return d;
+}
+let _g=0;
+function renderRankChart(name){
+  const series=rankHist(name); if(series.length<2)return"";
+  const ranks=series.map(s=>s.rank), best=Math.min(...ranks), worst=Math.max(...ranks), cur=ranks[ranks.length-1], bi=ranks.indexOf(best), n=series.length;
+  const W=320,H=86,padL=12,padR=12,padT=24,padB=16,pw=W-padL-padR,ph=H-padT-padB,span=Math.max(1,worst-best);
+  const X=i=>padL+(n===1?pw/2:i/(n-1)*pw), Y=r=>padT+(r-best)/span*ph, baseY=padT+ph;
+  const pts=series.map((s,i)=>[X(i),Y(s.rank)]), line=smoothPath(pts),
+        area=line+` L${X(n-1).toFixed(1)},${baseY.toFixed(1)} L${X(0).toFixed(1)},${baseY.toFixed(1)} Z`,
+        gid="rg"+(_g++), bx=X(bi), byy=Y(best), lx=X(n-1), ly=Y(cur),
+        clampLab=(x,t)=>{const hw=String(t).length*3.3+3;return Math.min(Math.max(x,padL+hw),W-padR-hw);},
+        bestTxt="Mejor #"+best, curTxt="#"+cur, near=bx>W*0.55||Math.abs(bx-lx)<52;
+  let curLabel="";
+  if(!(near&&cur===best)){
+    let cy=near?ly+15:(ly-9<10?ly+15:ly-9); cy=Math.min(Math.max(cy,10),H-3);
+    curLabel=`<text x="${clampLab(lx,curTxt).toFixed(1)}" y="${cy.toFixed(1)}" font-size="11.5" font-weight="900" fill="#167a45" text-anchor="middle">${curTxt}</text>`;
+  }
+  return `<div class="rank-evo"><div class="rank-evo-hd">📈 Evolución del puesto</div>
+    <svg viewBox="0 0 ${W} ${H}" class="rank-svg" role="img">
+      <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#167a45" stop-opacity="0.30"/><stop offset="1" stop-color="#167a45" stop-opacity="0"/></linearGradient></defs>
+      <line x1="${padL}" y1="${byy.toFixed(1)}" x2="${(W-padR).toFixed(1)}" y2="${byy.toFixed(1)}" stroke="#167a45" stroke-width="1" stroke-dasharray="3 4" opacity="0.4"/>
+      <path d="${area}" fill="url(#${gid})"/>
+      <path d="${line}" fill="none" stroke="#167a45" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="4" fill="#fff" stroke="#167a45" stroke-width="2.4"/>${curLabel}
+      <text x="${bx.toFixed(1)}" y="${byy.toFixed(1)}" font-size="15" fill="#e3a008" text-anchor="middle" dominant-baseline="central">★</text>
+      <text x="${clampLab(bx,bestTxt).toFixed(1)}" y="${Math.max(byy-9,9).toFixed(1)}" font-size="11.5" font-weight="900" fill="#b8860b" text-anchor="middle">${bestTxt}</text>
+    </svg>
+    <div class="rank-evo-ft">Desde ${fd(series[0].fecha)}</div></div>`;
 }
 
-function render(){
-  let k=kings(),
-      r=rank();
+/* ficha del jugador */
+function renderDetail(name){
+  const s=ST.get(name)||{w:0,l:0,pl:0,d:0}, pr=profile(name),
+        elo=Math.round((RANK.find(x=>x.n===name)||{e:1000}).e),
+        wr=s.pl?(s.w/s.pl*100):0;
+  const boxes=`<div class="sum">
+    <div class="box"><small>Pts. ELO</small><b>${elo}</b></div>
+    <div class="box"><small>Partidos</small><b>${s.w}-${s.l}</b></div>
+    <div class="box"><small>Win rate</small><b>${wr.toFixed(0)}%</b></div>
+    <div class="box"><small>Mejor puesto</small><b>${pr.best?("#"+pr.best):"—"}</b></div>
+  </div>`;
+  const chips=[
+    pr.topPartner?`<div class="chip"><small>🤝 Compañero top</small><b>${lk(pr.topPartner.n,mn(pr.topPartner.n))}</b><span>${pr.topPartner.w}-${pr.topPartner.g-pr.topPartner.w} juntos</span></div>`:"",
+    pr.mejorRival?`<div class="chip"><small>😈 Víctima favorita</small><b>${lk(pr.mejorRival.n,mn(pr.mejorRival.n))}</b><span>le ganaste ${pr.mejorRival.w}</span></div>`:"",
+    pr.peorRival?`<div class="chip"><small>💀 Bestia negra</small><b>${lk(pr.peorRival.n,mn(pr.peorRival.n))}</b><span>te ganó ${pr.peorRival.l}</span></div>`:"",
+    pr.streak?`<div class="chip"><small>🔥 Racha</small><b>${pr.streak} ${pr.sign?"ganados":"perdidos"}</b></div>`:""
+  ].filter(Boolean).join("");
+  const mine=HIST.filter(m=>[...m.a,...m.b].includes(name)).slice().reverse();
+  const grp=mine.reduce((o,m)=>{(o[fd(m.d)]=o[fd(m.d)]||[]).push(m);return o;},{});
+  const histHtml=Object.entries(grp).map(([d,ms])=>`<div><div class="day">${d}</div>${ms.map(m=>{
+    const inA=m.a.includes(name), pt=inA?m.a:m.b, rt=inA?m.b:m.a, ps=inA?m.sa:m.sb, rs=inA?m.sb:m.sa, won=ps>rs, ch=m.c[name].ch, mate=pt.find(x=>x!==name)||"";
+    return `<div class="match ${won?"win":"lose"}"><span class="res ${won?"elo":"loss"}">${won?"W":"L"}</span><span class="copy">con <strong>${lk(mate,hn(mate))}</strong> vs ${tmLk(rt)}</span><span class="sc">${ps}-${rs} ${eg(m)}</span><span class="mp ${ch<0?"loss":""}">${sg(ch)} Pts.</span></div>`;
+  }).join("")}</div>`).join("");
+  return `<div class="detail"><div class="hist">${boxes}${chips?`<div class="chips">${chips}</div>`:""}${renderRankChart(name)}<div class="day" style="margin-top:6px">Partidos</div>${histHtml}</div></div>`;
+}
 
-  $("#kings").innerHTML=`<div><span class="label">👑 <span>Reyes de la fecha</span> 👑</span><span class="king-name">${k.t.join(" / ")}</span><span class="pill">${k.w}W · ${k.l}L · ${sg(k.d)} Games · ${sg(k.p)} Pts.</span><span class="king-list">${k.r.map(x=>`<span class="king-row"><span class="score">${x.f}-${x.a}${eg(x.m)}</span><span class="rival">vs ${tm(x.o)}</span></span>`).join("")}</span></div>`;
-
-  $("#ranking").innerHTML=r.map((p,i)=>{
-    let wr=p.pl?p.w/p.pl*100:0;
-    return`<div class="player" data-name="${p.n}"><span class="rank ${i==0?"rank1":i==2?"rank3":""}">${i+1}</span><span><span class="p-name">${mn(p.n)}</span><span class="p-meta"><span class="bar"><span style="width:${wr}%"></span></span>${p.w} Wins · ${p.l} Lost · ${sg(p.d)} Games</span></span><span class="pts"><b>${Math.round(p.e)}</b><small>Pts.</small></span></div>`;
+/* ── renders ── */
+function renderReyesFecha(){
+  const k=kingsForFecha(LAST); if(!k){$("#kings").innerHTML="";return;}
+  $("#kings").innerHTML=`<div><span class="label">👑 <span>Reyes de la fecha</span> 👑</span><span class="king-name">${k.t.map(n=>lk(n,n)).join(" / ")}</span><span class="pill">${k.w}W · ${k.l}L · ${sg(k.d)} Games · ${sg(k.p)} Pts.</span><span class="king-list">${k.r.map(x=>`<span class="king-row"><span class="score">${x.f}-${x.a}${eg(x.m)}</span><span class="rival">vs ${tmLk(x.o)}</span></span>`).join("")}</span></div>`;
+}
+function renderReyesHist(){
+  const r=reyesHistoricos();
+  $("#reyes-hist").innerHTML=r.slice(0,8).map((x,i)=>`<div class="rey-row"><span class="rey-pos">${i===0?"👑":i+1}</span><span class="rey-name">${lk(x.n,x.n)}</span><span class="rey-count">${x.c} <small>fecha${x.c>1?"s":""}</small></span></div>`).join("");
+}
+function renderRanking(){
+  $("#ranking").innerHTML=RANK.map((p,i)=>{
+    const st=ST.get(p.n), wr=st.pl?st.w/st.pl*100:0;
+    return `<details class="player-wrap"><summary class="player" data-n="${esc(p.n)}"><span class="rank ${i==0?"rank1":i==2?"rank3":""}">${i+1}</span><span><span class="p-name">${mn(p.n)}</span><span class="p-meta"><span class="bar"><span style="width:${wr}%"></span></span>${st.w} Wins · ${st.l} Lost · ${sg(st.d)} Games</span></span><span class="pts"><b>${Math.round(p.e)}</b><small>Pts.</small></span></summary>${renderDetail(p.n)}</details>`;
   }).join("");
-
-  $("#results").innerHTML=hist().slice().reverse().map(m=>`<tr><td>${fd(m.d)}</td><td>${m.a.join(" / ")}</td><td class="elo">${m.sa} - ${m.sb} ${eg(m)}</td><td>${m.b.join(" / ")}</td><td class="elo">+${m.p} / -${m.p}</td></tr>`).join("");
+}
+function renderHistorial(){
+  $("#results").innerHTML=HIST.slice().reverse().map(m=>`<tr><td>${fd(m.d)}</td><td>${tmLk(m.a)}</td><td class="elo">${m.sa} - ${m.sb} ${eg(m)}</td><td>${tmLk(m.b)}</td><td class="elo">+${m.p} / -${m.p}</td></tr>`).join("");
 }
 
-render();
+/* abrir ficha desde cualquier nombre clickeable */
+function openPlayerByName(name){
+  const sum=[...document.querySelectorAll(".player-wrap summary.player")].find(s=>s.dataset.n===name);
+  if(!sum)return;
+  const det=sum.parentElement;
+  document.querySelectorAll(".player-wrap[open]").forEach(d=>{if(d!==det)d.open=false;});
+  det.open=true;
+  det.scrollIntoView({behavior:"smooth",block:"start"});
+}
+document.addEventListener("click",e=>{
+  const l=e.target.closest(".lk");
+  if(l){ e.preventDefault(); e.stopPropagation(); openPlayerByName(l.dataset.go); }
+});
 
-$("#ranking").onclick=e=>{
-  let c=e.target.closest(".player");
-  if(!c)return;
+/* buscador */
+function setupSearch(){
+  const form=$("#player-search"), input=$("#player-search-input"), sug=$("#player-search-suggestions");
+  if(!form)return;
+  const players=()=>[...document.querySelectorAll(".player-wrap summary.player")].map(s=>s.dataset.n);
+  const find=q=>players().filter(n=>clean(n).includes(q)).sort((a,b)=>Number(clean(b).startsWith(q))-Number(clean(a).startsWith(q)));
+  const hide=()=>{sug.classList.remove("show");sug.innerHTML="";};
+  input.addEventListener("input",()=>{
+    const q=clean(input.value); hide(); if(!q)return;
+    find(q).slice(0,5).forEach(n=>{
+      const b=document.createElement("button");
+      b.type="button"; b.className="search-suggestion"; b.textContent=n;
+      b.addEventListener("click",()=>{input.value=n;hide();openPlayerByName(n);});
+      sug.appendChild(b);
+    });
+    if(sug.children.length)sug.classList.add("show");
+  });
+  form.addEventListener("submit",e=>{e.preventDefault();const q=clean(input.value);if(!q)return;const f=find(q)[0];if(f){hide();openPlayerByName(f);}});
+  document.addEventListener("click",e=>{if(!form.contains(e.target))hide();});
+}
 
-  let open=c.classList.contains("active");
-
-  document.querySelectorAll(".player").forEach(x=>x.classList.remove("active"));
-  document.querySelectorAll(".detail").forEach(x=>x.remove());
-
-  if(open)return;
-
-  c.classList.add("active");
-  c.insertAdjacentHTML("afterend",det(c.dataset.name));
-};
+renderReyesFecha();
+renderReyesHist();
+renderRanking();
+renderHistorial();
+setupSearch();
 
 (async()=>{
   if(location.hostname!="fabmarti15.github.io")return;
@@ -372,9 +491,7 @@ $("#ranking").onclick=e=>{
         hit=!sessionStorage.getItem(k),
         r=await fetch(`https://countapi.mileshilliard.com/api/v1/${hit?"hit":"get"}/${k}`),
         d=await r.json();
-
     if(hit)sessionStorage.setItem(k,"1");
-
     $("#visits").textContent=(21+Number(d.value||0)).toLocaleString("es-CL");
   }catch{}
 })();
