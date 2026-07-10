@@ -39,6 +39,14 @@ h2{font-size:clamp(1.8rem,6vw,3rem);line-height:.95;letter-spacing:-.05em}
 .king-row:last-child{border:0}
 .score{color:var(--i);font-weight:950}
 .rival{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fecha-nav{display:flex;flex-direction:column;gap:10px;margin:16px 0 2px}
+.fecha-btns{display:flex;flex-wrap:wrap;gap:8px}
+.fecha-btn{padding:7px 13px;border:1px solid #167a4538;border-radius:999px;background:#fff;color:var(--g);font-size:.82rem;font-weight:900;cursor:pointer;transition:.15s;font-family:inherit}
+.fecha-btn:hover{background:#167a450d}
+.fecha-btn.on{background:var(--g);border-color:var(--g);color:#fff}
+.fecha-sel{width:100%;padding:11px 13px;border:1px solid var(--l);border-radius:12px;background:#fafaf8;color:var(--i);font-size:.92rem;font-weight:800;font-family:inherit;cursor:pointer}
+.fecha-sel:focus{outline:none;border-color:var(--g);background:#fff}
+.king-date{display:block;margin-top:8px;color:var(--m);font-size:.82rem;font-weight:850}
 .egg{display:inline-flex;margin-left:4px;font-size:1rem;cursor:help;animation:e 1.35s ease-in-out infinite;transform-origin:bottom}
 .tip{position:relative}
 .tip:after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 10px);width:min(260px,80vw);padding:10px 12px;border-radius:10px;background:#171717;color:white;font-size:.78rem;line-height:1.25;font-weight:800;white-space:normal;transform:translateX(-50%) translateY(4px);opacity:0;pointer-events:none;transition:.16s;z-index:3}
@@ -139,7 +147,14 @@ th{color:var(--m);font-size:.62rem;letter-spacing:.07em;text-transform:uppercase
       <h1>Americanos de los Jueves</h1>
       <div class="sub">Ranking ELO · pádel</div>
     </div>
-    <div class="kings" id="kings"></div>
+    <div class="kings" id="kings">
+      <div class="label">👑 <span>Reyes de la fecha</span> 👑</div>
+      <div class="fecha-nav">
+        <div class="fecha-btns" id="fecha-btns"></div>
+        <select class="fecha-sel" id="fecha-sel" aria-label="Elegir fecha"></select>
+      </div>
+      <div id="king-body"></div>
+    </div>
     <div class="stats"><span>Histórico de visitas: <strong id="visits">21</strong></span><span>Viendo ahora mismo: <strong>1</strong></span></div>
   </section>
 
@@ -451,9 +466,25 @@ function renderDetail(name){
 }
 
 /* ── renders ── */
-function renderReyesFecha(){
-  const k=kingsForFecha(LAST); if(!k){$("#kings").innerHTML="";return;}
-  $("#kings").innerHTML=`<div><span class="label">👑 <span>Reyes de la fecha</span> 👑</span><span class="king-name">${k.t.map(n=>lk(n,n)).join(" / ")}</span><span class="pill">${k.w}W · ${k.l}L · ${sg(k.d)} Games · ${sg(k.p)} Pts.</span><span class="king-list">${k.r.map(x=>`<span class="king-row"><span class="score">${x.f}-${x.a}${eg(x.m)}</span><span class="rival">vs ${tmLk(x.o)}</span></span>`).join("")}</span></div>`;
+const MES=["Ene.","Feb.","Mar.","Abr.","May.","Jun.","Jul.","Ago.","Sep.","Oct.","Nov.","Dic."];
+const fdShort=d=>`${+d.slice(8)} ${MES[+d.slice(5,7)-1]}`;
+let selFecha=LAST;
+function renderFechaNav(){
+  const recent=[...FECHAS].reverse(), btns=$("#fecha-btns"), sel=$("#fecha-sel");
+  if(btns) btns.innerHTML=recent.slice(0,4).map(f=>`<button type="button" class="fecha-btn" data-f="${f}">${fdShort(f)}</button>`).join("");
+  if(sel){ sel.innerHTML=recent.map(f=>`<option value="${f}">${fd(f)}</option>`).join(""); sel.onchange=e=>renderReyesFecha(e.target.value); }
+}
+function updateFechaNavActive(){
+  document.querySelectorAll(".fecha-btn").forEach(b=>b.classList.toggle("on",b.dataset.f===selFecha));
+  const sel=$("#fecha-sel"); if(sel&&sel.value!==selFecha) sel.value=selFecha;
+}
+function renderReyesFecha(f){
+  if(f) selFecha=f;
+  const k=kingsForFecha(selFecha), body=$("#king-body");
+  if(!body) return;
+  if(!k){ body.innerHTML=""; return; }
+  body.innerHTML=`<span class="king-name">${k.t.map(n=>lk(n,n)).join(" / ")}</span><span class="king-date">${fd(selFecha)}</span><span class="pill">${k.w}W · ${k.l}L · ${sg(k.d)} Games · ${sg(k.p)} Pts.</span><span class="king-list">${k.r.map(x=>`<span class="king-row"><span class="score">${x.f}-${x.a}${eg(x.m)}</span><span class="rival">vs ${tmLk(x.o)}</span></span>`).join("")}</span>`;
+  updateFechaNavActive();
 }
 function renderReyesHist(){
   const r=reyesHistoricos();
@@ -479,6 +510,8 @@ function openPlayerByName(name){
   det.scrollIntoView({behavior:"smooth",block:"start"});
 }
 document.addEventListener("click",e=>{
+  const b=e.target.closest(".fecha-btn");
+  if(b){ renderReyesFecha(b.dataset.f); return; }
   const l=e.target.closest(".lk");
   if(l){ e.preventDefault(); e.stopPropagation(); openPlayerByName(l.dataset.go); }
 });
@@ -504,7 +537,8 @@ function setupSearch(){
   document.addEventListener("click",e=>{if(!form.contains(e.target))hide();});
 }
 
-renderReyesFecha();
+renderFechaNav();
+renderReyesFecha(LAST);
 renderReyesHist();
 renderRanking();
 renderHistorial();
