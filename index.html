@@ -88,6 +88,8 @@ details[open]>.player{background:#167a450d;margin:0 -10px;padding:14px 10px;bord
 .p-name{display:block;font-size:1rem;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .p-meta{display:flex;align-items:center;gap:8px;margin-top:6px;color:var(--m);font-size:.75rem;font-weight:850;white-space:nowrap;line-height:1.1}
 .p-games{display:block;margin-top:4px;white-space:normal}
+.games-pos{color:#4f9770}
+.games-neg{color:#c56b6b}
 .bar{width:72px;height:6px;border-radius:999px;background:var(--r);overflow:hidden;flex:0 0 72px}
 .bar span{display:block;height:100%;border-radius:999px;background:var(--g)}
 .pts{text-align:right}
@@ -487,8 +489,9 @@ function renderReyesHist(){
 }
 function renderRanking(){
   $("#ranking").innerHTML=RANK.map((p,i)=>{
-    const st=ST.get(p.n), wr=st.pl?st.w/st.pl*100:0;
-    return `<details class="player-wrap"><summary class="player" data-n="${esc(p.n)}"><span class="rank ${i==0?"rank1":i==2?"rank3":""}">${i+1}</span><span><span class="p-name">${mn(p.n)}</span><span class="p-meta"><span class="bar"><span style="width:${wr}%"></span></span>${st.w} Wins · ${st.l} Lost</span><span class="p-meta p-games">${st.gf} games a favor · ${st.ga} games en contra</span></span><span class="pts"><b>${Math.round(p.e)}</b><small>Pts.</small></span></summary>${renderDetail(p.n)}</details>`;
+    const st=ST.get(p.n), wr=st.pl?st.w/st.pl*100:0, gd=st.gf-st.ga,
+          games=`<span class="${gd>0?"games-pos":gd<0?"games-neg":""}">${Math.abs(gd)}</span> games${gd>0?" a favor":gd<0?" en contra":""}`;
+    return `<details class="player-wrap"><summary class="player" data-n="${esc(p.n)}"><span class="rank ${i==0?"rank1":i==2?"rank3":""}">${i+1}</span><span><span class="p-name">${mn(p.n)}</span><span class="p-meta"><span class="bar"><span style="width:${wr}%"></span></span>${st.w} Wins · ${st.l} Lost</span><span class="p-meta p-games">${games}</span></span><span class="pts"><b>${Math.round(p.e)}</b><small>Pts.</small></span></summary>${renderDetail(p.n)}</details>`;
   }).join("");
 }
 function renderHistorial(){
