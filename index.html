@@ -87,6 +87,7 @@ details[open]>.player{background:#167a450d;margin:0 -10px;padding:14px 10px;bord
 .rank3{background:var(--b)}
 .p-name{display:block;font-size:1rem;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .p-meta{display:flex;align-items:center;gap:8px;margin-top:6px;color:var(--m);font-size:.75rem;font-weight:850;white-space:nowrap;line-height:1.1}
+.p-games{display:block;margin-top:4px;white-space:normal}
 .bar{width:72px;height:6px;border-radius:999px;background:var(--r);overflow:hidden;flex:0 0 72px}
 .bar span{display:block;height:100%;border-radius:999px;background:var(--g)}
 .pts{text-align:right}
@@ -342,14 +343,15 @@ const RANK=STAND[LAST];
 const rankOf=n=>{const i=RANK.findIndex(x=>x.n===n);return i<0?999:i+1;};
 function rankHist(n){const o=[];FECHAS.forEach(f=>{const i=STAND[f].findIndex(x=>x.n===n);if(i>=0)o.push({fecha:f,rank:i+1});});return o;}
 
-/* W/L/games por jugador */
+/* W/L/games a favor y en contra por jugador */
 function fullStats(){
-  let st=new Map(P.map(n=>[n,{n,w:0,l:0,d:0,pl:0}]));
+  let st=new Map(P.map(n=>[n,{n,w:0,l:0,gf:0,ga:0,pl:0}]));
   G.forEach(m=>{
     let aw=m.sa>m.sb, W=aw?m.a:m.b, L=aw?m.b:m.a;
     [...m.a,...m.b].forEach(n=>st.get(n).pl++);
     W.forEach(n=>st.get(n).w++); L.forEach(n=>st.get(n).l++);
-    m.a.forEach(n=>st.get(n).d+=m.sa-m.sb); m.b.forEach(n=>st.get(n).d+=m.sb-m.sa);
+    m.a.forEach(n=>{st.get(n).gf+=m.sa;st.get(n).ga+=m.sb});
+    m.b.forEach(n=>{st.get(n).gf+=m.sb;st.get(n).ga+=m.sa});
   });
   return st;
 }
@@ -486,7 +488,7 @@ function renderReyesHist(){
 function renderRanking(){
   $("#ranking").innerHTML=RANK.map((p,i)=>{
     const st=ST.get(p.n), wr=st.pl?st.w/st.pl*100:0;
-    return `<details class="player-wrap"><summary class="player" data-n="${esc(p.n)}"><span class="rank ${i==0?"rank1":i==2?"rank3":""}">${i+1}</span><span><span class="p-name">${mn(p.n)}</span><span class="p-meta"><span class="bar"><span style="width:${wr}%"></span></span>${st.w} Wins · ${st.l} Lost · ${sg(st.d)} Games</span></span><span class="pts"><b>${Math.round(p.e)}</b><small>Pts.</small></span></summary>${renderDetail(p.n)}</details>`;
+    return `<details class="player-wrap"><summary class="player" data-n="${esc(p.n)}"><span class="rank ${i==0?"rank1":i==2?"rank3":""}">${i+1}</span><span><span class="p-name">${mn(p.n)}</span><span class="p-meta"><span class="bar"><span style="width:${wr}%"></span></span>${st.w} Wins · ${st.l} Lost</span><span class="p-meta p-games">${st.gf} games a favor · ${st.ga} games en contra</span></span><span class="pts"><b>${Math.round(p.e)}</b><small>Pts.</small></span></summary>${renderDetail(p.n)}</details>`;
   }).join("");
 }
 function renderHistorial(){
