@@ -5,17 +5,17 @@ Referencia para traducir los apodos del WhatsApp al **nombre oficial** que usa l
 
 | Nombre oficial (en la página) | Apodos / cómo aparece en el grupo |
 |---|---|
-| Felipe Skewes | **Pipe**, Pipe Skewes, **Felipe S**, **feli**, "el presidente" |
+| Felipe Skewes | **Pipe**, **Presidente**, Pipe Skewes, **Felipe S**, **feli**, "el presidente" |
 | Ignacio Tejeda | Tejeda, Nacho |
 | Tomás San Juan | Tom, **Tom SJ**, Tom sj, San Juan |
 | Daniel La Roche | **Dani**, Dani La Roche |
-| Fabián Martínez | **Fa**, Fabián, Fabian |
-| Diego Martínez | **Yeyo**, Diego |
+| Fabián Martínez | **Fa**, Fabián, Fabian Martínez |
+| Diego Martínez | **Yeyo**, Diego, Diego Martínez |
 | Joaquín Villanueva | **Joaco**, Juaco, Joako, Joako Villanueva |
 | Felipe Bindis | Bindis |
-| Cristian Pérez | **Cris**, C Pérez, Pérez |
-| Nicolás Terré | Terré, Terre |
-| Fabrizio Arnalot | **Fabri**, Fabrizio |
+| Cristian Pérez | **Cris**, **Crist**, Cristian, C Pérez, Pérez |
+| Nicolás Terré | **Terre**, Terré, Nicolás Terre |
+| Fabrizio Arnalot | **Fa Arnalot**, **Fabri**, Fa A., Fabrizio |
 | José Manuel Lecaros | Lecaros, José Manuel |
 | Karl Nebe | **Nebe**, Karl, Karl Nebe Miranda |
 | Angello Tapia | Tapia, Angello |
@@ -23,10 +23,11 @@ Referencia para traducir los apodos del WhatsApp al **nombre oficial** que usa l
 
 ## ⚠️ Ojo con las confusiones (apodos peligrosos)
 
-- **"Fa" = Fabián Martínez** ≠ **"Fabri" = Fabrizio Arnalot**. Son dos personas.
+- **"Fa" = Fabián Martínez** ≠ **"Fa Arnalot" / "Fabri" = Fabrizio Arnalot**. Son dos personas.
 - **"feli" = Felipe Skewes** (el presidente), NO Felipe Bindis. A Bindis dícenle "Bindis".
 - **"Yeyo" = Diego Martínez**. No es un jugador nuevo.
 - **"Pipe"** también es Felipe Skewes.
+- **"Cris" / "Crist" = Cristian Pérez**.
 
 ## Cómo se guardan los resultados
 
