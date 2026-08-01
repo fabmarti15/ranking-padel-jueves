@@ -20,6 +20,7 @@ Referencia para traducir los apodos del WhatsApp al **nombre oficial** que usa l
 | Karl Nebe | **Nebe**, Karl, Karl Nebe Miranda |
 | Angello Tapia | Tapia, Angello |
 | Andrés Velarde | **Velarde**, Velardes (jugador nuevo desde el 18-jun; pareja fija de Angello Tapia) |
+| Kyle Shepard | **Kyle** (jugador nuevo desde el 30-jul) |
 
 ## ⚠️ Ojo con las confusiones (apodos peligrosos)
 
