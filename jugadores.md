@@ -21,6 +21,8 @@ Referencia para traducir los apodos del WhatsApp al **nombre oficial** que usa l
 | Angello Tapia | Tapia, Angello |
 | Andrés Velarde | **Velarde**, Velardes (jugador nuevo desde el 18-jun; pareja fija de Angello Tapia) |
 | Kyle Shepard | **Kyle** (jugador nuevo desde el 30-jul) |
+| Jaime Ugarte | **Jaime U.**, Jaime (jugador nuevo desde el 13-ago) |
+| Felipe Feijo | **Feijo**, Felipe Feijo (jugador nuevo desde el 13-ago, entró de reemplazo de Kyle) |
 
 ## ⚠️ Ojo con las confusiones (apodos peligrosos)
 
@@ -29,6 +31,8 @@ Referencia para traducir los apodos del WhatsApp al **nombre oficial** que usa l
 - **"Yeyo" = Diego Martínez**. No es un jugador nuevo.
 - **"Pipe"** también es Felipe Skewes.
 - **"Cris" / "Crist" = Cristian Pérez**.
+- **Ojo con "Felipe"**: hay cuatro. Skewes ("Pipe"/"Felipe S"/"feli"), Bindis ("Bindis"), Feijo ("Feijo") y ninguno se llama "Felipe" a secas en el chat.
+- **13-ago-2026:** el "Fa" de la pareja "Fa - Jaime" era **Fabrizio Arnalot**, no Fabián Martínez (Fabián no jugó ese día y no aparecía en el listado). Cuando en el listado solo esté "Fabrizio" y no "Fa", cualquier "Fa" en las parejas es Arnalot.
 
 ## Cómo se guardan los resultados
 
