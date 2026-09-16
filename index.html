@@ -379,18 +379,57 @@ async function fetchRows(){
   return parseCSV(await r.text());
 }
 /* Una sola pestaña: columnas A-G = partidos (Fecha, A1, A2, B1, B2, Games A, Games B); columna I = lista de jugadores */
+/* apodos del grupo → nombre oficial (ver jugadores.md) */
+const ALIAS={
+  "Felipe Skewes":["pipe","presidente","el presidente","feli","felipe s","pipe skewes","skewes"],
+  "Ignacio Tejeda":["tejeda","nacho","nacho tejeda"],
+  "Tomás San Juan":["tom","tom sj","tomsj","san juan","tomas","tomás","sanjuan"],
+  "Daniel La Roche":["dani","dani la roche","la roche","laroche","daniel"],
+  "Fabián Martínez":["fa","fabian","fabián","fa martinez","fabian m"],
+  "Diego Martínez":["yeyo","diego","yeyo martinez"],
+  "Joaquín Villanueva":["joaco","juaco","joako","villanueva","joaquin","joaquín"],
+  "Felipe Bindis":["bindis"],
+  "Cristian Pérez":["cris","crist","cristian","c perez","c. perez","perez","pérez"],
+  "Nicolás Terré":["terre","terré","nico","nicolas","nicolás","nico terre"],
+  "Fabrizio Arnalot":["fabri","fa arnalot","fa a","fa a.","fabrizio","arnalot"],
+  "José Manuel Lecaros":["lecaros","jose manuel","josé manuel","jm","jm lecaros"],
+  "Karl Nebe":["nebe","karl"],
+  "Angello Tapia":["tapia","angello","angelo"],
+  "Andrés Velarde":["velarde","velardes","andres","andrés"],
+  "Kyle Shepard":["kyle","shepard"],
+  "Jaime Ugarte":["jaime","jaime u","jaime u.","ugarte"],
+  "Felipe Feijo":["feijo","feijó"]
+};
+function makeResolver(players){
+  const exact=new Map(players.map(n=>[clean(n),n]));
+  const alias=new Map();
+  Object.entries(ALIAS).forEach(([n,as])=>{if(exact.has(clean(n)))as.forEach(a=>alias.set(clean(a),n));});
+  const tokens=new Map(); // nombre o apellido suelto → lista de jugadores
+  players.forEach(n=>clean(n).split(/\s+/).forEach(t=>{if(!tokens.has(t))tokens.set(t,[]);tokens.get(t).push(n);}));
+  return raw=>{
+    const k=clean(raw);if(!k)return null;
+    if(exact.has(k))return exact.get(k);
+    if(alias.has(k))return alias.get(k);
+    const t=tokens.get(k);if(t&&t.length==1)return t[0];
+    const pre=players.filter(n=>clean(n).startsWith(k));if(pre.length==1&&k.length>=3)return pre[0];
+    return null;
+  };
+}
+/* Una sola pestaña: columnas A-G = partidos (Fecha, A1, A2, B1, B2, Games A, Games B); columna I = lista de jugadores */
 function buildData(rows){
   const players=rows.slice(1).map(r=>String(r[8]||"").trim()).filter(Boolean);
-  const byKey=new Map(players.map(n=>[clean(n),n]));
-  const errs=[],out=[];
+  const resolve=makeResolver(players);
+  const errs=[],out=[];let lastD=null;
   rows.slice(1).forEach((r,i)=>{
     const line=i+2,names=r.slice(1,5).map(x=>String(x||"").trim()),rawD=String(r[0]||"").trim();
-    if(!rawD&&names.every(n=>!n))return;
-    const d=parseDate(rawD),sa=+String(r[5]).trim(),sb=+String(r[6]).trim();
-    if(!d){errs.push(`fila ${line}: fecha inválida "${rawD}"`);return;}
-    const off=names.map(n=>byKey.get(clean(n)));
+    if(names.every(n=>!n))return;                       // fila vacía (o solo con jugador en col. I)
+    let d=rawD?parseDate(rawD):lastD;                   // fecha vacía = misma que la fila anterior
+    if(!d){errs.push(`fila ${line}: fecha inválida "${rawD||"(vacía)"}"`);return;}
+    lastD=d;
+    const sa=+String(r[5]).trim(),sb=+String(r[6]).trim();
+    const off=names.map(resolve);
     const bad=names.filter((n,k)=>!off[k]);
-    if(bad.length){errs.push(`fila ${line}: jugador no está en la columna Jugadores: ${bad.map(x=>`"${x||"(vacío)"}"`).join(", ")}`);return;}
+    if(bad.length){errs.push(`fila ${line}: no reconozco a ${bad.map(x=>`"${x||"(vacío)"}"`).join(", ")}`);return;}
     if(new Set(off).size<4){errs.push(`fila ${line}: un jugador aparece dos veces`);return;}
     if(!Number.isInteger(sa)||!Number.isInteger(sb)||sa<0||sb<0||sa==sb){errs.push(`fila ${line}: games inválidos (${r[5]}-${r[6]})`);return;}
     out.push({d,a:[off[0],off[1]],b:[off[2],off[3]],sa,sb,_i:i});
@@ -409,7 +448,7 @@ async function loadData(){
     if(!players.length||!games.length)throw new Error("planilla vacía");
     P=players;G=games;
     try{localStorage.setItem("rpj-cache",JSON.stringify({P,G,t:Date.now()}));}catch{}
-    if(errs.length)showNote(`⚠️ ${errs.length} fila${errs.length>1?"s":""} de la planilla no se cargaron:<br>${errs.map(esc).join("<br>")}`,"warn");
+    if(errs.length)showNote(`⚠️ ${errs.length>1?errs.length+" filas de la planilla no se cargaron":"1 fila de la planilla no se cargó"}:<br>${errs.map(esc).join("<br>")}`,"warn");
   }catch(e){
     try{const c=JSON.parse(localStorage.getItem("rpj-cache"));if(c&&c.G&&c.G.length){P=c.P;G=c.G;}}catch{}
     showNote("No se pudo leer la planilla. Mostrando la última copia guardada.","warn");
